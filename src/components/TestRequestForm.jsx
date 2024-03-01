@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import {
-    Button, Form, FormGroup, FormFeedback, Input, Dropdown,
+    Button, Form, FormGroup, Input, Dropdown,
     DropdownMenu, DropdownToggle, Container,
     Row, Col, InputGroupText, InputGroup, Label
 } from 'reactstrap';
@@ -57,8 +57,8 @@ export default function TestRequestForm() {
     // submission state values
     const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
 
-    const baseURL = 'http://localhost:4000/';
-    //const baseURL = 'https://irods-settings-dev.apps.renci.org/';
+    //const baseURL = 'http://localhost:4000/';
+    const baseURL = 'https://irods-settings-dev.apps.renci.org/';
 
     const change_testProviderChecked = (value) => {
         /**
@@ -225,11 +225,14 @@ export default function TestRequestForm() {
          */
 
         // init the form is valid flag
-        let formIsValid;
+        let formIsValid = true;
 
         // check the group name
         if (test_RequestName === '') {
             set_test_RequestNameState('has-danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_test_RequestNameState('has-success');
         }
@@ -237,6 +240,9 @@ export default function TestRequestForm() {
         // check the package directory name
         if (test_PackageDirectoryNameState === '') {
             set_test_PackageDirectoryNameState('has-danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_test_PackageDirectoryNameState('has-success');
         }
@@ -244,6 +250,9 @@ export default function TestRequestForm() {
         // check the test type name
         if (os_ImageNameSelected.toUpperCase() === 'Select a OS'.toUpperCase()) {
             set_os_NameState('danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_os_NameState('primary');
         }
@@ -251,6 +260,9 @@ export default function TestRequestForm() {
         // check the test type name
         if (dbms_ImageNameSelected.toUpperCase() === 'Select a DBMS'.toUpperCase()) {
             set_dbms_NameState('danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_dbms_NameState('primary');
         }
@@ -258,6 +270,9 @@ export default function TestRequestForm() {
         // check the test type name
         if (test_TypeNameSelected.toUpperCase() === 'Select a test type'.toUpperCase()) {
             set_type_NameState('danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_type_NameState('primary');
         }
@@ -265,6 +280,9 @@ export default function TestRequestForm() {
         // check the provider test names
         if (test_ProviderNames.length === 0 && test_ProviderChecked) {
             set_test_ProviderNameState('has-danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_test_ProviderNameState('has-success');
         }
@@ -272,14 +290,12 @@ export default function TestRequestForm() {
         // check the consumer test names
         if (test_ConsumerNames.length === 0 && test_ConsumerChecked) {
             set_test_ConsumerNameState('has-danger');
+
+            // set the failure flag
+            formIsValid &= false;
         } else {
             set_test_ConsumerNameState('has-success');
         }
-
-        // all items need to be populated
-        formIsValid = test_RequestNameState === 'has-success' && dbms_NameState === 'primary' && os_NameState === 'primary' &&
-            type_NameState === 'primary' && test_ConsumerNameState === 'has-success' && test_ProviderNameState === 'has-success' &&
-            test_PackageDirectoryNameState === 'has-success';
 
         // log the captured results to the console
         console.log(`FormIsValid: ${formIsValid}, Request: ${test_RequestName}, suite: ${test_TypeName}, provider tests: ${test_ProviderNames}, \
@@ -379,9 +395,6 @@ export default function TestRequestForm() {
                                                onChange={(e) => { handleTest_RequestNameChange(e) }}>
                                         </Input>
                                     </InputGroup>
-
-                                    <FormFeedback>There is an issue with your group name.</FormFeedback>
-                                    <FormFeedback valid>That is a good group name.</FormFeedback>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -401,9 +414,6 @@ export default function TestRequestForm() {
                                                onChange={(e) => { handleTest_PackageDirectoryNameChange(e) }}>
                                         </Input>
                                     </InputGroup>
-
-                                    <FormFeedback>There is an issue with your package directroy name.</FormFeedback>
-                                    <FormFeedback valid>That is a good package directory name.</FormFeedback>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -481,11 +491,10 @@ export default function TestRequestForm() {
                                                onChange={change_ProviderTestsSelectValues}
                                                valid={test_ProviderNameState === "has-success"}
                                                invalid={test_ProviderNameState === "has-danger"}>
+
                                             <GetTestNameData />
                                         </Input>
                                     </InputGroup>
-                                    <FormFeedback>There is an issue with your test names.</FormFeedback>
-                                    <FormFeedback valid>Excellent choices.</FormFeedback>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -512,8 +521,6 @@ export default function TestRequestForm() {
                                             <GetTestNameData />
                                         </Input>
                                     </InputGroup>
-                                    <FormFeedback>There is an issue with your test names.</FormFeedback>
-                                    <FormFeedback valid>Excellent choices.</FormFeedback>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -534,9 +541,8 @@ export default function TestRequestForm() {
                                             </Label>
                                         </InputGroupText>
 
-                                    <Button style={{width: "100"}} color={"primary"}>Submit</Button>
+                                        <Button style={{width: "100"}} color={"primary"}>Submit</Button>
                                     </InputGroup>
-
                                 </FormGroup>
                             </Col>
                         </Row>

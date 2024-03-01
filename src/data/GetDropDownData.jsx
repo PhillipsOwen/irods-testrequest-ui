@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {DropdownItem} from "reactstrap";
 
-    const baseURL = 'http://localhost:4000/';
-    //const baseURL = 'https://irods-settings-dev.apps.renci.org/'
+//const baseURL = 'http://localhost:4000/';
+const baseURL = 'https://irods-settings-dev.apps.renci.org/'
 
 export default function GetPulldownData({data_name, on_click}) {
     /**
