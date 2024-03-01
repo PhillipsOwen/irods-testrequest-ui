@@ -2,8 +2,9 @@ import {Container, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import React, {useEffect, useRef, useState} from 'react';
 
 export default function WatchStatus() {
-    //const baseURL = 'http://localhost:4000/';
+    //const baseURL = 'http://localhost:4000/get_run_status/?request_group=';
     const baseURL = 'https://irods-settings-dev.apps.renci.org/get_run_status/?request_group=';
+
     const refreshTime = 5000
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZWFyZXJfbmFtZSI6InNldHRpbmdzLWRldiIsImJlYXJlcl9zZWNyZXQiOiI2NTU0N2' +
     'U0NDg2Y2I1ZTg0NzkzMWZjMjAwYTQ5MjM5OTA3ZmZhMTRhNDY4ZTM2MzMifQ.eBsy9qwrj8Axs9b_WV1cY8k_dHDMsc5vvhoIfqTZ1v0';
@@ -94,6 +95,7 @@ export default function WatchStatus() {
         /**
          *
          */
+        // init the message storage
         let message = ''
 
         // if we are currently scanning display a message
