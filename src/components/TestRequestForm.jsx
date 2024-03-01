@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import {
     Button, Form, FormGroup, Input, Dropdown,
@@ -54,11 +54,15 @@ export default function TestRequestForm() {
     const [test_ProviderNameState, set_test_ProviderNameState] = useState('has-success');
     const [test_ConsumerNameState, set_test_ConsumerNameState] = useState('has-success');
 
-    // submission state values
+    // submission items
     const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
+    const [submissionStatus, set_submissionStatus] = useState('');
 
     //const baseURL = 'http://localhost:4000/';
     const baseURL = 'https://irods-settings-dev.apps.renci.org/';
+
+    // init the form is valid flag
+    let formIsValid = true;
 
     const change_testProviderChecked = (value) => {
         /**
@@ -144,7 +148,7 @@ export default function TestRequestForm() {
         set_dbms_ImageNameSelected(value);
 
         // set the DBMS type by the name
-        set_dbms_TypeName('postgresql'); //value.split(":")[0].toLowerCase()
+        set_dbms_TypeName(value.split(":")[0].toLowerCase());
     }
 
     const change_ProviderTestsSelectValues = (e) => {
@@ -223,13 +227,15 @@ export default function TestRequestForm() {
         /**
          * Validates the data entered by the user.
          */
-
-        // init the form is valid flag
-        let formIsValid = true;
+        // init a validation status text
+        let submission_status = 'There were issues with your submission:\n';
 
         // check the group name
         if (test_RequestName === '') {
             set_test_RequestNameState('has-danger');
+
+            // set the error message
+            submission_status += ' - Request Name missing.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -238,8 +244,11 @@ export default function TestRequestForm() {
         }
 
         // check the package directory name
-        if (test_PackageDirectoryNameState === '') {
+        if (test_PackageDirectoryName === '') {
             set_test_PackageDirectoryNameState('has-danger');
+
+            // set the error message
+            submission_status += ' - Package Directory Name missing.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -251,6 +260,9 @@ export default function TestRequestForm() {
         if (os_ImageNameSelected.toUpperCase() === 'Select a OS'.toUpperCase()) {
             set_os_NameState('danger');
 
+            // set the error message
+            submission_status += ' - No OS Image Name selected.\n';
+
             // set the failure flag
             formIsValid &= false;
         } else {
@@ -260,6 +272,9 @@ export default function TestRequestForm() {
         // check the test type name
         if (dbms_ImageNameSelected.toUpperCase() === 'Select a DBMS'.toUpperCase()) {
             set_dbms_NameState('danger');
+
+            // set the error message
+            submission_status += ' - No DBMS Image Name selected.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -271,6 +286,9 @@ export default function TestRequestForm() {
         if (test_TypeNameSelected.toUpperCase() === 'Select a test type'.toUpperCase()) {
             set_type_NameState('danger');
 
+            // set the error message
+            submission_status += ' - Test Type Name selected.\n';
+
             // set the failure flag
             formIsValid &= false;
         } else {
@@ -281,6 +299,9 @@ export default function TestRequestForm() {
         if (test_ProviderNames.length === 0 && test_ProviderChecked) {
             set_test_ProviderNameState('has-danger');
 
+            // set the error message
+            submission_status += ' - No Provider tests selected.\n';
+
             // set the failure flag
             formIsValid &= false;
         } else {
@@ -290,6 +311,9 @@ export default function TestRequestForm() {
         // check the consumer test names
         if (test_ConsumerNames.length === 0 && test_ConsumerChecked) {
             set_test_ConsumerNameState('has-danger');
+
+            // set the error message
+            submission_status += ' - No Consumer tests selected.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -304,6 +328,14 @@ export default function TestRequestForm() {
         console.log(`RequestNameState: ${test_RequestNameState}, dbms_NameState: ${dbms_NameState}, os_NameState: ${os_NameState}, \
         type_NameState: ${type_NameState}, ConsumerNameState: ${test_ConsumerNameState}, ProviderNameState: ${test_ProviderNameState}, \
         PackageNameState: ${test_PackageDirectoryNameState}`);
+
+        // alert the user
+        if (!formIsValid) {
+            set_submissionStatus(submission_status);
+        }
+        else {
+            set_submissionStatus('');
+        }
 
         // return the validation result
         return formIsValid;
@@ -335,9 +367,13 @@ export default function TestRequestForm() {
         const newTests = JSON.stringify(tests);
 
         // return the request to the caller
-        return baseURL + `superv_workflow_request/${test_TypeName}/run_status/${run_mode}/package_dir/` +
-            `${encodeURIComponent(test_PackageDirectoryName)}/?db_type=${dbms_TypeName}&db_image=${encodeURIComponent(dbms_ImageName)}&os-image=` +
-            `${encodeURIComponent(os_ImageName)}&tests=${encodeURIComponent(newTests)}&request_group=${test_RequestName}`;
+        return baseURL + `superv_workflow_request/${test_TypeName}/run_status/${run_mode}` +
+            `?package_dir=${encodeURIComponent(test_PackageDirectoryName)}` +
+            `&db_type=${dbms_TypeName}` +
+            `&db_image=${encodeURIComponent(dbms_ImageName)}` +
+            `&os_image=${encodeURIComponent(os_ImageName)}` +
+            `&request_group=${test_RequestName}` +
+            `&tests=${encodeURIComponent(newTests)}`;
     }
 
     const handleSubmit = (e) => {
@@ -345,6 +381,9 @@ export default function TestRequestForm() {
          * handles the form submission.
          */
         e.preventDefault();
+
+        // init the form is valid flag
+        formIsValid = true;
 
         // validate the data in the controls
         if (validateRequestForm()) {
@@ -369,11 +408,25 @@ export default function TestRequestForm() {
             fetch(URL, requestOptions)
                 .then(res => { return res.json(); })
                 .then(data => { console.log(data); })
-                .catch(err => { console.log(err); })
-                .then(response => console.log('Submitted successfully'))
-                .catch(error => console.log('Form submit error', error));
+                .catch(err => { set_submissionStatus(err); })
+                .then(response => set_submissionStatus(`Submitted ${test_RequestName} successfully.`))
+                .catch(error => set_submissionStatus(error));
         }
     }
+
+    const ShowSubmissionResults = () => {
+    /**
+     * displays the submission results
+     */
+        // return the control
+        return (
+            <>
+                <Input type="textarea" disabled={true} defaultValue={submissionStatus} rows="8"></Input>
+                <br/>
+            </>
+        )
+
+    };
 
     return (
         <>
@@ -410,7 +463,7 @@ export default function TestRequestForm() {
                                         <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName" value={test_PackageDirectoryName}
                                                placeholder="Enter a package directory name"
                                                valid={test_PackageDirectoryNameState === "has-success"}
-                                               invalid={test_RequestNameState === "has-danger"}
+                                               invalid={test_PackageDirectoryNameState === "has-danger"}
                                                onChange={(e) => { handleTest_PackageDirectoryNameChange(e) }}>
                                         </Input>
                                     </InputGroup>
@@ -545,6 +598,12 @@ export default function TestRequestForm() {
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
+                        <Row>
+                            <Col>
+                                <ShowSubmissionResults />
+                                <br/>
+                            </Col>
+                        </Row>
                         </Row>
                     </Form>
                 </Row>
