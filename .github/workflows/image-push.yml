@@ -1,7 +1,7 @@
 # Copyright (c) 2024, The University of North Carolina at Chapel Hill All rights reserved.
 # SPDX-FileCopyrightText: 2022 Renaissance Computing Institute. All rights reserved.
 #
-# SPDX-License-Identifier: BSD 3-Clause License
+# SPDX-License-Identifier: BSD 3-Clause
 
 name: Build and push the Test Request UI Docker image tagged with "latest" and version number
 

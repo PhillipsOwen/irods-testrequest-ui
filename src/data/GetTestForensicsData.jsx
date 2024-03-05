@@ -1,6 +1,6 @@
 // Copyright (c) 2024, The University of North Carolina at Chapel Hill All rights reserved.
 //
-// SPDX-License-Identifier: BSD 3-Clause License
+// SPDX-License-Identifier: BSD 3-Clause
 
 import React, {useEffect, useState} from "react";
 import {Input, InputGroupText, InputGroup} from "reactstrap";
