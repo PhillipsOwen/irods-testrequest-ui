@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2024 Renaissance Computing Institute. All rights reserved.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: LicenseRef-RENCI
+// SPDX-License-Identifier: MIT
+
 import React, {useEffect, useState} from "react";
 
 //const baseURL = 'http://localhost:4000/';

@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2024 Renaissance Computing Institute. All rights reserved.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: LicenseRef-RENCI
+// SPDX-License-Identifier: MIT
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router} from 'react-router-dom';
