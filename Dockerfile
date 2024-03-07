@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD 3-Clause
 
-FROM node:20.11.1
+FROM node:20.11.1 as build
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,6 @@ RUN ls -al
 
 RUN npm install
 
-
 RUN ls -al
 
 RUN npm run build
@@ -21,4 +20,4 @@ RUN ls -al
 
 FROM nginx:stable-alpine
 
-COPY build/ /usr/share/nginx/html
+COPY --from=build build/ /usr/share/nginx/html
