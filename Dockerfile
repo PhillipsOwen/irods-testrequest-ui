@@ -2,22 +2,26 @@
 #
 # SPDX-License-Identifier: BSD 3-Clause
 
+# get some credit
+LABEL maintainer="powen@renci.org"
+
+# build phase one, create the build
 FROM node:20.11.1 as build
 
+# set the working directory
 WORKDIR /usr/src/app
 
+# copy all the source files there
 COPY . .
 
-RUN ls -al
-
+# install all packages/componenets
 RUN npm install
 
-RUN ls -al
-
+# create a production build
 RUN npm run build
 
-RUN ls -al
-
+# build phase two, create the web server
 FROM nginx:stable-alpine
 
+# copy in the build files into the image
 COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
