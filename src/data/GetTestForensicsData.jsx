@@ -5,8 +5,8 @@
 import React, {useEffect, useState} from "react";
 import {Input, InputGroupText, InputGroup} from "reactstrap";
 
-//const baseURL = 'http://localhost:4000/';
-const baseURL = 'https://irods-settings-dev.apps.renci.org/'
+//const REACT_APP_BASE_DATA_URL = 'http://localhost:4000/';
+const REACT_APP_BASE_DATA_URL = 'https://irods-settings-dev.apps.renci.org/'
 
 export default function GetTestForensicsData({request_group}) {
     /**
@@ -18,7 +18,7 @@ export default function GetTestForensicsData({request_group}) {
     const [item, setItem] = useState('');
 
     // define the web service endpoint
-    let URL = baseURL + '/get_run_forensics/?request_group=' + request_group;
+    let URL = REACT_APP_BASE_DATA_URL + 'get_run_forensics/?request_group=' + request_group;
 
     const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZWFyZXJfbmFtZSI6InNldHRpbmdzLWRldiIsImJlYXJlcl9zZWNyZXQiOiI2NTU0N2U0NDg2Y2I1ZTg0NzkzMWZjMjAwYTQ5MjM5OTA3ZmZhMTRhNDY4ZTM2MzMifQ.eBsy9qwrj8Axs9b_WV1cY8k_dHDMsc5vvhoIfqTZ1v0';
 

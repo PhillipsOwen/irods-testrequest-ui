@@ -4,8 +4,8 @@
 
 import React, {useEffect, useState} from "react";
 
-//const baseURL = 'http://localhost:4000/';
-const baseURL = 'https://irods-settings-dev.apps.renci.org/'
+// const REACT_APP_BASE_URL = 'http://localhost:4000/';
+const REACT_APP_BASE_URL = 'https://irods-settings-dev.apps.renci.org/'
 
 export default function GetTestNameData() {
     /**
@@ -17,7 +17,7 @@ export default function GetTestNameData() {
     const [items, setItems] = useState([])
 
     // define the web service endpoint
-    let URL = baseURL + 'get_test_names';
+    let URL = REACT_APP_BASE_URL + 'get_test_names';
 
     const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZWFyZXJfbmFtZSI6InNldHRpbmdzLWRldiIsImJlYXJlcl9zZWNyZXQiOiI2NTU0N2U0NDg2Y2I1ZTg0NzkzMWZjMjAwYTQ5MjM5OTA3ZmZhMTRhNDY4ZTM2MzMifQ.eBsy9qwrj8Axs9b_WV1cY8k_dHDMsc5vvhoIfqTZ1v0';
 
