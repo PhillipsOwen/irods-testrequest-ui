@@ -51,7 +51,6 @@ export default function TestRequestForm() {
 
     // validation state values
     const [test_RequestNameState, set_test_RequestNameState] = useState('has-success');
-    const [test_PackageDirectoryNameState, set_test_PackageDirectoryNameState] = useState('has-success');
     const [dbms_NameState, set_dbms_NameState] = useState('primary');
     const [os_NameState, set_os_NameState] = useState('primary');
     const [type_NameState, set_type_NameState] = useState('primary');
@@ -62,8 +61,8 @@ export default function TestRequestForm() {
     const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
     const [submissionStatus, set_submissionStatus] = useState('');
 
-    //const baseURL = 'http://localhost:4000/';
-    const baseURL = 'https://irods-settings-dev.apps.renci.org/';
+    //const REACT_APP_BASE_DATA_URL = 'http://localhost:4000/';
+    const REACT_APP_BASE_DATA_URL = 'https://irods-settings-dev.apps.renci.org/';
 
     // init the form is valid flag
     let formIsValid = true;
@@ -247,19 +246,6 @@ export default function TestRequestForm() {
             set_test_RequestNameState('has-success');
         }
 
-        // check the package directory name
-        if (test_PackageDirectoryName === '') {
-            set_test_PackageDirectoryNameState('has-danger');
-
-            // set the error message
-            submission_status += ' - Package Directory Name missing.\n';
-
-            // set the failure flag
-            formIsValid &= false;
-        } else {
-            set_test_PackageDirectoryNameState('has-success');
-        }
-
         // check the test type name
         if (os_ImageNameSelected.toUpperCase() === 'Select a OS'.toUpperCase()) {
             set_os_NameState('danger');
@@ -330,8 +316,7 @@ export default function TestRequestForm() {
         consumer tests: ${test_ConsumerNames}, os: ${os_ImageName}, dbms: ${dbms_ImageName}, package dir: ${test_PackageDirectoryName}`);
 
         console.log(`RequestNameState: ${test_RequestNameState}, dbms_NameState: ${dbms_NameState}, os_NameState: ${os_NameState}, \
-        type_NameState: ${type_NameState}, ConsumerNameState: ${test_ConsumerNameState}, ProviderNameState: ${test_ProviderNameState}, \
-        PackageNameState: ${test_PackageDirectoryNameState}`);
+        type_NameState: ${type_NameState}, ConsumerNameState: ${test_ConsumerNameState}, ProviderNameState: ${test_ProviderNameState}`);
 
         // alert the user
         if (!formIsValid) {
@@ -371,7 +356,8 @@ export default function TestRequestForm() {
         const newTests = JSON.stringify(tests);
 
         // return the request to the caller
-        return baseURL + `superv_workflow_request/${test_TypeName}/run_status/${run_mode}` +
+        return REACT_APP_BASE_DATA_URL +
+            `superv_workflow_request/${test_TypeName}/run_status/${run_mode}` +
             `?package_dir=${encodeURIComponent(test_PackageDirectoryName)}` +
             `&db_type=${dbms_TypeName}` +
             `&db_image=${encodeURIComponent(dbms_ImageName)}` +
@@ -413,7 +399,7 @@ export default function TestRequestForm() {
                 .then(res => { return res.json(); })
                 .then(data => { console.log(data); })
                 .catch(err => { set_submissionStatus(err); })
-                .then(response => set_submissionStatus(`Submitted ${test_RequestName} successfully.`))
+                .then(response => set_submissionStatus(`Submitted the "${test_RequestName}" request successfully.`))
                 .catch(error => set_submissionStatus(error));
         }
     }
@@ -466,8 +452,6 @@ export default function TestRequestForm() {
 
                                         <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName" value={test_PackageDirectoryName}
                                                placeholder="Enter a package directory name"
-                                               valid={test_PackageDirectoryNameState === "has-success"}
-                                               invalid={test_PackageDirectoryNameState === "has-danger"}
                                                onChange={(e) => { handleTest_PackageDirectoryNameChange(e) }}>
                                         </Input>
                                     </InputGroup>
