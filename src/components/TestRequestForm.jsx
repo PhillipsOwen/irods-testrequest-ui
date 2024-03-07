@@ -61,9 +61,6 @@ export default function TestRequestForm() {
     const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
     const [submissionStatus, set_submissionStatus] = useState('');
 
-    //const REACT_APP_BASE_DATA_URL = 'http://localhost:4000/';
-    const REACT_APP_BASE_DATA_URL = 'https://irods-settings-dev.apps.renci.org/';
-
     // init the form is valid flag
     let formIsValid = true;
 
@@ -356,7 +353,7 @@ export default function TestRequestForm() {
         const newTests = JSON.stringify(tests);
 
         // return the request to the caller
-        return REACT_APP_BASE_DATA_URL +
+        return process.env.REACT_APP_BASE_DATA_URL +
             `superv_workflow_request/${test_TypeName}/run_status/${run_mode}` +
             `?package_dir=${encodeURIComponent(test_PackageDirectoryName)}` +
             `&db_type=${dbms_TypeName}` +
@@ -382,15 +379,15 @@ export default function TestRequestForm() {
             // build the request
             const URL = buildTestRequest();
 
-            const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZWFyZXJfbmFtZSI6InNldHRpbmdzLWRldiIsImJlYXJlcl9zZWNyZXQiOiI2NTU0N2' +
-                'U0NDg2Y2I1ZTg0NzkzMWZjMjAwYTQ5MjM5OTA3ZmZhMTRhNDY4ZTM2MzMifQ.eBsy9qwrj8Axs9b_WV1cY8k_dHDMsc5vvhoIfqTZ1v0';
+            // set the setting security token
+            const dataSecurityToken = process.env.REACT_APP_SETTINGS_DATA_TOKEN;
 
             // push up the data
             const requestOptions = {
                 method: 'PUT',
                 headers: {
                     accept: 'application/json',
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${dataSecurityToken}`
                 }
             };
 

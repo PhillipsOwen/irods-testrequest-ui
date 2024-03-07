@@ -6,21 +6,22 @@ import {Container, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import React, {useEffect, useRef, useState} from 'react';
 
 export default function WatchStatus() {
-    // const REACT_APP_BASE_DATA_URL = 'http://localhost:4000/';
-    const REACT_APP_BASE_DATA_URL = 'https://irods-settings-dev.apps.renci.org/';
 
-    const refreshTime = 10000
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiZWFyZXJfbmFtZSI6InNldHRpbmdzLWRldiIsImJlYXJlcl9zZWNyZXQiOiI2NTU0N2' +
-        'U0NDg2Y2I1ZTg0NzkzMWZjMjAwYTQ5MjM5OTA3ZmZhMTRhNDY4ZTM2MzMifQ.eBsy9qwrj8Axs9b_WV1cY8k_dHDMsc5vvhoIfqTZ1v0';
+    // set the default refresh time
+    const refreshTime = Number(process.env.REACT_APP_WATCH_REFRESH_TIMEOUT);
+
+    // set the setting security token
+    const dataSecurityToken = process.env.REACT_APP_SETTINGS_DATA_TOKEN;
 
     const request_group = useRef('');
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
 
+    // set the request header
     const requestOptions = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${dataSecurityToken}`
         }
     };
 
@@ -30,8 +31,8 @@ export default function WatchStatus() {
          */
         try {
             // attempt to get the data
-            const statusData = await fetch(REACT_APP_BASE_DATA_URL + `get_run_status/?request_group=${request_group.current.value}`,
-                requestOptions);
+            const statusData = await fetch(process.env.REACT_APP_BASE_DATA_URL +
+                `get_run_status/?request_group=${request_group.current.value}`, requestOptions);
 
             // if the data was not retrieved successfully
             if (!statusData.ok) {
@@ -69,8 +70,6 @@ export default function WatchStatus() {
         if (scanning) {
             // no need to call for data if there is no request group
             if (request_group !== "") {
-                console.log("effect -> request group:" + request_group);
-
                 // This will refresh the data at regularIntervals of refreshTime
                 const comInterval = setInterval(getStatusData, refreshTime);
 
@@ -98,8 +97,8 @@ export default function WatchStatus() {
         /**
          *
          */
-            // init the message storage
-        let message = ''
+        // init the message storage
+        let message;
 
         // if we are currently scanning display a message
         if (scanning === true) {
