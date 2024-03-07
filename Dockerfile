@@ -12,7 +12,7 @@ RUN npm install
 
 RUN ls -al
 
-COPY . .
+#COPY . .
 
 #FROM nginx:stable-alpine
 #
