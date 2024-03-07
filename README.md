@@ -6,8 +6,8 @@ SPDX-License-Identifier: BSD 3-Clause
 
 [![iRODS](iRODS-Logo.png)](https://docs.irods.org)
 
-# iRODS-K8s Forensics
-The iRODS-K8s Forensics workflow step microservice.
+# iRODS-K8s Test Request UI
+The iRODS-K8s Test Request UI is a Node.js/React website used to submit a test request to the iRODS K8s supervisor.
 
 #### Licenses...
 [![MIT License](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/irods-contrib/iRODS-K8s-forensics/blob/main/LICENSE)
@@ -21,6 +21,6 @@ The iRODS-K8s Forensics workflow step microservice.
 [![Build and push the Docker image](https://github.com/PhillipsOwen/irods-testrequest-ui/actions/workflows/image-push.yml/badge.svg)](https://github.com/PhillipsOwen/irods-testrequest-ui/actions/workflows/image-push.yml)
 
 ## Description
-The iRODS-K8s Testing UI product is a Node.js/React website used to submit a test request to the iRODS K8s supervisor.
+The iRODS-K8s Test Request UI product allows a user to create and submit a test request and watch its progression through K8s.
 
 Standard Node.js/React build rules apply.
