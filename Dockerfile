@@ -8,11 +8,17 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN ls -al
+
 RUN npm install
+
+RUN ls -al
 
 RUN npm run build
 
 RUN ls -al
+
+
 
 #COPY . .
 
