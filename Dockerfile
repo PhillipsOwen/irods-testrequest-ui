@@ -10,10 +10,10 @@ COPY package*.json ./
 
 RUN npm install
 
-#RUN ls -al
+RUN ls -al
 
 COPY . .
 
-FROM nginx:stable-alpine
-
-COPY build/ /usr/share/nginx/html
+#FROM nginx:stable-alpine
+#
+#COPY build/ /usr/share/nginx/html
