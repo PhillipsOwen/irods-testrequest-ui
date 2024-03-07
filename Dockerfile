@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm build
+RUN npm run build
 
 RUN ls -al
 
