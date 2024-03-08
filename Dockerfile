@@ -26,3 +26,7 @@ FROM nginx:stable-alpine
 
 # copy in the build files into the image
 COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
+
+WORKDIR /usr/share/nginx/html
+
+CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]
