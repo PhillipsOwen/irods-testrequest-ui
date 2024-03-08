@@ -2,11 +2,12 @@
 #
 # SPDX-License-Identifier: BSD 3-Clause
 
-# get some credit
-LABEL maintainer="powen@renci.org"
 
 # build phase one, create the build
 FROM node:20.11.1 as build
+
+# get some credit
+LABEL maintainer="powen@renci.org"
 
 # set the working directory
 WORKDIR /usr/src/app
