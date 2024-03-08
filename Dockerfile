@@ -15,16 +15,16 @@ WORKDIR /usr/src/app
 # copy all the source files there
 COPY . .
 
-# install all packages/componenets
+# install all packages/components
 RUN npm install
 
 # create a production build
 RUN npm run build
 
-# build phase two, create the web server
-FROM nginx:stable-alpine
-
-# copy in the build files into the image
-COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
-
-WORKDIR /usr/share/nginx/html
+## build phase two, create the web server
+#FROM nginx:stable-alpine
+#
+## copy in the build files into the image
+#COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
+#
+#WORKDIR /usr/share/nginx/html
