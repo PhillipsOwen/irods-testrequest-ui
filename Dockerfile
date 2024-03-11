@@ -12,11 +12,20 @@ LABEL maintainer="powen@renci.org"
 # set the working directory
 WORKDIR /usr/src/app
 
-# copy all the source files there
-COPY . .
+# copy over the source files
+COPY ./src ./src
+COPY ./public ./public
+COPY ./iRODS*.png .
+COPY ./package*.json .
 
 # install all packages/components
 RUN npm install
+
+# get the build argument that has the version
+ARG APP_VERSION=$(APP_VERSION)
+
+# now add the version arg value into a ENV param
+ENV APP_VERSION=$APP_VERSION
 
 # create a production build
 RUN npm run build
