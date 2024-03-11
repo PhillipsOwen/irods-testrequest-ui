@@ -25,7 +25,7 @@ RUN npm install
 ARG APP_VERSION=$(APP_VERSION)
 
 # now add the version arg value into a ENV param
-ENV APP_VERSION=$APP_VERSION
+ENV REACT_APP_VERSION=$APP_VERSION
 
 # create a production build
 RUN npm run build
