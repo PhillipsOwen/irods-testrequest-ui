@@ -15,8 +15,8 @@ WORKDIR /usr/src/app
 # copy over the source files
 COPY ./src ./src
 COPY ./public ./public
-COPY ./iRODS*.png .
-COPY ./package*.json .
+COPY ./iRODS*.png ./
+COPY ./package*.json ./
 
 # install all packages/components
 RUN npm install
@@ -26,17 +26,3 @@ ARG APP_VERSION=$(APP_VERSION)
 
 # now add the version arg value into a ENV param
 ENV REACT_APP_VERSION=$APP_VERSION
-
-# create a production build
-RUN npm run build
-
-# copy over the build directory
-COPY ./build ./build
-
-## build phase two, create the web server
-#FROM nginx:stable-alpine
-#
-## copy in the build files into the image
-#COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
-#
-#WORKDIR /usr/share/nginx/html
