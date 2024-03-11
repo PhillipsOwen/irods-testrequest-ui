@@ -9,19 +9,21 @@ import {Link} from "react-router-dom";
         return (
             <>
                 <Navbar style={{backgroundColor: '#18bc9c'}} expand="xs" className="border-bottom border-gray">
-                    <Col className="justify-content-start">
+                    <Col className="d-flex justify-content-start">
                         <NavbarBrand href="https://www.irods.org">
                             <img alt="logo" src={process.env.PUBLIC_URL + '/iRODS-Logo-RTM_white.png'} style={{height: 40}}/>
                         </NavbarBrand>
                     </Col>
 
-                    <Col className="justify-content-center">
+                    <Col className="d-flex justify-content-center">
                         <NavbarBrand className="d-inline-block p-0">
                             <h1 style={{color: "white"}}>Test request</h1>
                         </NavbarBrand>
                     </Col>
 
-                    <Col></Col>
+                    <Col className="d-flex justify-content-end">
+                        Version: {process.env.REACT_APP_VERSION}
+                    </Col>
                 </Navbar>
                 <Navbar expand="xs" className="border-bottom border-gray">
                     <Row>
@@ -29,8 +31,7 @@ import {Link} from "react-router-dom";
                         <div>
                             <div>
                                 <nav>
-                                    <Link style={{color: "White", align: "left"}} to="/">Request a new test run</Link>
-                                    <p/>
+                                    <Link style={{color: "White", align: "left", marginRight: "100px"}} to="/">Request a new test run</Link>
                                     <Link style={{color: "White", align: "left"}} to="/WatchStatus">Follow the run state</Link>
                                 </nav>
                             </div>
