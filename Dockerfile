@@ -30,6 +30,9 @@ ENV REACT_APP_VERSION=$APP_VERSION
 # create a production build
 RUN npm run build
 
+# copy over the build directory
+COPY ./build ./build
+
 ## build phase two, create the web server
 #FROM nginx:stable-alpine
 #
