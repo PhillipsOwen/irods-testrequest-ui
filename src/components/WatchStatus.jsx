@@ -18,14 +18,13 @@ export default function WatchStatus() {
     const inRequestName = queryParams.get("request-name");
 
     // define the state variables
-    const [test_RequestName, set_test_RequestName] =  useState(inRequestName);
+    const [test_RequestName, set_test_RequestName] = useState(inRequestName);
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
 
     // set the request header
     const requestOptions = {
-        method: 'GET',
-        headers: {
+        method: 'GET', headers: {
             Authorization: `Bearer ${dataSecurityToken}`
         }
     };
@@ -36,8 +35,8 @@ export default function WatchStatus() {
          */
         try {
             // attempt to get the data
-            const statusData = await fetch(process.env.REACT_APP_BASE_DATA_URL +
-                `get_run_status/?request_group=${test_RequestName}`, requestOptions);
+            const statusData = await fetch(process.env.REACT_APP_BASE_DATA_URL + `get_run_status/?request_group=${test_RequestName}`,
+                requestOptions);
 
             // if the data was not retrieved successfully
             if (!statusData.ok) {
@@ -47,6 +46,7 @@ export default function WatchStatus() {
                 // wait for the data
                 const data = await statusData.json();
 
+                // if no job data was found
                 if (data['Jobs'] === null) {
                     // set a warning
                     data['Jobs'] = 'Not found';
@@ -72,6 +72,7 @@ export default function WatchStatus() {
 
     // get the data
     useEffect(() => {
+        // if we are in scan mode
         if (scanning) {
             // no need to call for data if there is no request group
             if (test_RequestName !== "") {
@@ -93,21 +94,19 @@ export default function WatchStatus() {
 
         // if we are currently scanning display a message
         if (scanning === true) {
-            message = `Polling the "${test_RequestName}" request for updates...`;
+            message = `Polling the "${test_RequestName}" request for status updates...`;
         } else {
             message = "Standing by...";
         }
 
         // return the control
-        return (
-            <>
-                <p/>
-                <div style={{align: "left"}}>
-                    <h4 style={{color: "white"}}>{message}</h4>
-                </div>
-                <br/>
-            </>
-        )
+        return (<>
+            <p/>
+            <div style={{align: "left"}}>
+                <h4 style={{color: "white"}}>{message}</h4>
+            </div>
+            <br/>
+        </>)
     };
 
     const handleSubmit = (e) => {
@@ -134,55 +133,38 @@ export default function WatchStatus() {
     };
 
     /**
-     * render the results
+     * render the page
      */
-    return (
-        <>
-            <Container className='mt-4'>
-                <Row>
-                    <Form className="form" onSubmit={(e) => handleSubmit(e)}>
-                        <FormGroup>
-                            <InputGroup>
-                                <InputGroupText>
-                                    Enter the test name &nbsp;
-                                </InputGroupText>
+    return (<>
+        <Container className='mt-4'>
+            <Row>
+                <Form className="form" onSubmit={(e) => handleSubmit(e)}>
+                    <FormGroup>
+                        <InputGroup>
+                            <InputGroupText>
+                                Enter the test request name &nbsp;
+                            </InputGroupText>
 
-                                <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
-                                       placeholder="Enter a request name"
-                                       onChange={(e) => { handleTest_RequestNameChange(e) }}>
-                                </Input>
+                            <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
+                                   placeholder="Enter a request name"
+                                   onChange={(e) => {handleTest_RequestNameChange(e)}}>
+                            </Input>
 
-                                    {/*<Input type="text"*/}
-                                    {/*       placeholder="Enter a request name"*/}
-                                    {/*       ref={request_group}*/}
-                                    {/*       onChange={ handleOnChange } />*/}
+                            <Button style={{width: "100"}} color={"primary"}>Submit</Button>
+                        </InputGroup>
+                    </FormGroup>
+                </Form>
+            </Row>
+            <Row>
+                <StatusPollingText/>
+            </Row>
+            <Row>
+                <InputGroupText>
+                    Test request progress &nbsp;
+                    <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="15"/>
+                </InputGroupText>
 
-                                    {/*<input*/}
-                                    {/*    type="text"*/}
-                                    {/*    ref={request_group}*/}
-                                    {/*    placeholder="Enter a request name"*/}
-                                    {/*    //value={request_group.current}*/}
-                                    {/*    onChange={handleOnChange}*/}
-                                    {/*/>*/}
-
-
-                                <Button style={{width: "100"}} color={"primary"}>Submit</Button>
-
-                                {/*<button className="btn btn-md btn-primary" onClick={getStatusData}>Start</button>*/}
-                            </InputGroup>
-                        </FormGroup>
-                    </Form>
-                </Row>
-                <Row>
-                    <StatusPollingText/>
-                </Row>
-                <Row>
-                    <InputGroupText>
-                        Test request progress &nbsp;
-                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="15"/>
-                    </InputGroupText>
-                </Row>
-            </Container>
-        </>
-    );
+            </Row>
+        </Container>
+    </>);
 }
