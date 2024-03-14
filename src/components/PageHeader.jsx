@@ -22,7 +22,7 @@ import {Link} from "react-router-dom";
                     </Col>
 
                     <Col className="d-flex justify-content-end">
-                        Version: {process.env.REACT_APP_VERSION}
+                        <span style={{color: "white"}}>Version: {process.env.REACT_APP_VERSION}</span>
                     </Col>
                 </Navbar>
                 <Navbar expand="xs" className="border-bottom border-gray">
