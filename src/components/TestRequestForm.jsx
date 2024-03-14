@@ -238,7 +238,7 @@ export default function TestRequestForm() {
             set_test_RequestNameState('has-danger');
 
             // set the error message
-            submission_status += ' - Request Name missing.\n';
+            submission_status += ' - A Request Name required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -251,7 +251,7 @@ export default function TestRequestForm() {
             set_os_NameState('danger');
 
             // set the error message
-            submission_status += ' - No OS Image Name selected.\n';
+            submission_status += ' - An OS Image Name is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -264,7 +264,7 @@ export default function TestRequestForm() {
             set_dbms_NameState('danger');
 
             // set the error message
-            submission_status += ' - No DBMS Image Name selected.\n';
+            submission_status += ' - A DBMS Image Name is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -277,7 +277,7 @@ export default function TestRequestForm() {
             set_type_NameState('danger');
 
             // set the error message
-            submission_status += ' - Test Type Name selected.\n';
+            submission_status += ' - A Test Type Name is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -290,7 +290,7 @@ export default function TestRequestForm() {
             set_test_ProviderNameState('has-danger');
 
             // set the error message
-            submission_status += ' - No Provider tests selected.\n';
+            submission_status += ' - One or more Provider tests are required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -303,7 +303,7 @@ export default function TestRequestForm() {
             set_test_ConsumerNameState('has-danger');
 
             // set the error message
-            submission_status += ' - No Consumer tests selected.\n';
+            submission_status += ' - One or more Consumer tests are required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -323,7 +323,7 @@ export default function TestRequestForm() {
             set_submissionStatus(submission_status);
         }
         else {
-            set_submissionStatus('');
+            set_submissionStatus('Submission sent.');
         }
 
         // return the validation result
@@ -362,7 +362,7 @@ export default function TestRequestForm() {
             `&db_type=${dbms_TypeName}` +
             `&db_image=${encodeURIComponent(dbms_ImageName)}` +
             `&os_image=${encodeURIComponent(os_ImageName)}` +
-            `&request_name=${test_RequestName}` +
+            `&request_group=${test_RequestName}` +
             `&tests=${encodeURIComponent(newTests)}`;
     }
 
@@ -589,7 +589,10 @@ export default function TestRequestForm() {
                             </Col>
                         <Row>
                             <Col>
-                                <ShowSubmissionResults />
+                                <InputGroupText>
+                                    Submission results &nbsp;
+                                    <ShowSubmissionResults/>
+                                </InputGroupText>
                                 <br/>
                             </Col>
                         </Row>
