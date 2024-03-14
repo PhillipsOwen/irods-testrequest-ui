@@ -13,6 +13,7 @@ import {
 //import {useNavigate} from 'react-router-dom';
 import GetTestTypeData from '../data/GetDropDownData.jsx';
 import GetTestNameData from "../data/GetTestNameData.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function TestRequestForm() {
     /**
@@ -60,6 +61,8 @@ export default function TestRequestForm() {
     // submission items
     const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
     const [submissionStatus, set_submissionStatus] = useState('');
+
+    const navigate = useNavigate();
 
     // init the form is valid flag
     let formIsValid = true;
@@ -359,7 +362,7 @@ export default function TestRequestForm() {
             `&db_type=${dbms_TypeName}` +
             `&db_image=${encodeURIComponent(dbms_ImageName)}` +
             `&os_image=${encodeURIComponent(os_ImageName)}` +
-            `&request_group=${test_RequestName}` +
+            `&request_name=${test_RequestName}` +
             `&tests=${encodeURIComponent(newTests)}`;
     }
 
@@ -395,8 +398,9 @@ export default function TestRequestForm() {
             fetch(URL, requestOptions)
                 .then(res => { return res.json(); })
                 .then(data => { console.log(data); })
-                .catch(err => { set_submissionStatus(err); })
-                .then(response => set_submissionStatus(`Submitted the "${test_RequestName}" request successfully.`))
+                .then(response => set_submissionStatus(`Submitted the "${test_RequestName}" request.`))
+                .then(navigate(`/WatchStatus?request-name=${test_RequestName}`))
+                .catch(err => set_submissionStatus(err))
                 .catch(error => set_submissionStatus(error));
         }
     }

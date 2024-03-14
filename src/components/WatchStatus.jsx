@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 
-import {Container, Input, InputGroup, InputGroupText, Row} from "reactstrap";
-import React, {useEffect, useRef, useState} from 'react';
+import {Button, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import React, {useEffect, useState} from 'react';
 
 export default function WatchStatus() {
 
@@ -13,7 +13,12 @@ export default function WatchStatus() {
     // set the setting security token
     const dataSecurityToken = process.env.REACT_APP_SETTINGS_DATA_TOKEN;
 
-    const request_group = useRef('');
+    // handle the query string
+    const queryParams = new URLSearchParams(window.location.search);
+    const inRequestName = queryParams.get("request-name");
+
+    // define the state variables
+    const [test_RequestName, set_test_RequestName] =  useState(inRequestName);
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
 
@@ -32,7 +37,7 @@ export default function WatchStatus() {
         try {
             // attempt to get the data
             const statusData = await fetch(process.env.REACT_APP_BASE_DATA_URL +
-                `get_run_status/?request_group=${request_group.current.value}`, requestOptions);
+                `get_run_status/?request_group=${test_RequestName}`, requestOptions);
 
             // if the data was not retrieved successfully
             if (!statusData.ok) {
@@ -69,7 +74,7 @@ export default function WatchStatus() {
     useEffect(() => {
         if (scanning) {
             // no need to call for data if there is no request group
-            if (request_group !== "") {
+            if (test_RequestName !== "") {
                 // This will refresh the data at regularIntervals of refreshTime
                 const comInterval = setInterval(getStatusData, refreshTime);
 
@@ -79,30 +84,16 @@ export default function WatchStatus() {
         }
     })
 
-    const handleOnChange = () => {
+    const StatusPollingText = () => {
         /**
-         * handles the value change on the test request name
-         */
-        // are we in scan mode?
-        if (scanning) {
-            // turn off scanning
-            setScanning(false);
-
-            // clear the status message
-            setStatusMsg('');
-        }
-    }
-
-    const TextWithFormatting = () => {
-        /**
-         *
+         * display of what request is being polled
          */
         // init the message storage
         let message;
 
         // if we are currently scanning display a message
         if (scanning === true) {
-            message = `Scanning the ${request_group.current.value} state...`;
+            message = `Polling the "${test_RequestName}" request for updates...`;
         } else {
             message = "Standing by...";
         }
@@ -119,6 +110,29 @@ export default function WatchStatus() {
         )
     };
 
+    const handleSubmit = (e) => {
+        /**
+         * handles the form submission.
+         */
+        e.preventDefault();
+
+        // start getting the data
+        getStatusData().then();
+    }
+
+    const handleTest_RequestNameChange = (e) => {
+        /**
+         * event handler for the form controls
+         */
+        e.preventDefault();
+
+        // save the event target
+        const {target} = e;
+
+        // save the event vale
+        set_test_RequestName(target.value);
+    };
+
     /**
      * render the results
      */
@@ -126,28 +140,41 @@ export default function WatchStatus() {
         <>
             <Container className='mt-4'>
                 <Row>
-                    <InputGroup>
-                        <InputGroupText>
-                            Enter the test name &nbsp;
-                            {/*<Input type="text"*/}
-                            {/*       placeholder="Enter a request name"*/}
-                            {/*       ref={request_group}*/}
-                            {/*       onChange={ handleOnChange } />*/}
+                    <Form className="form" onSubmit={(e) => handleSubmit(e)}>
+                        <FormGroup>
+                            <InputGroup>
+                                <InputGroupText>
+                                    Enter the test name &nbsp;
+                                </InputGroupText>
 
-                            <input
-                                type="text"
-                                ref={request_group}
-                                placeholder="Enter a request name"
-                                onChange={handleOnChange}
-                            />
-                        </InputGroupText>
+                                <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
+                                       placeholder="Enter a request name"
+                                       onChange={(e) => { handleTest_RequestNameChange(e) }}>
+                                </Input>
 
-                        <button className="btn btn-md btn-primary" onClick={getStatusData}>Start</button>
+                                    {/*<Input type="text"*/}
+                                    {/*       placeholder="Enter a request name"*/}
+                                    {/*       ref={request_group}*/}
+                                    {/*       onChange={ handleOnChange } />*/}
 
-                    </InputGroup>
+                                    {/*<input*/}
+                                    {/*    type="text"*/}
+                                    {/*    ref={request_group}*/}
+                                    {/*    placeholder="Enter a request name"*/}
+                                    {/*    //value={request_group.current}*/}
+                                    {/*    onChange={handleOnChange}*/}
+                                    {/*/>*/}
+
+
+                                <Button style={{width: "100"}} color={"primary"}>Submit</Button>
+
+                                {/*<button className="btn btn-md btn-primary" onClick={getStatusData}>Start</button>*/}
+                            </InputGroup>
+                        </FormGroup>
+                    </Form>
                 </Row>
                 <Row>
-                    <TextWithFormatting/>
+                    <StatusPollingText/>
                 </Row>
                 <Row>
                     <InputGroupText>
