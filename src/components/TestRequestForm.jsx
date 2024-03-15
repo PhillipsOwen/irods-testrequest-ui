@@ -10,18 +10,13 @@ import {
     Row, Col, InputGroupText, InputGroup, Label
 } from 'reactstrap';
 
-//import {useNavigate} from 'react-router-dom';
 import GetTestTypeData from '../data/GetDropDownData.jsx';
 import GetTestNameData from "../data/GetTestNameData.jsx";
-import {useNavigate} from "react-router-dom";
 
 export default function TestRequestForm() {
     /**
      * this class renders the form to capture users' selection for a test request.
      */
-    // used after the page has been submitted
-    //const navigate = useNavigate();
-
     // the name of the test request group
     const [test_RequestName, set_test_RequestName] =  useState('');
      
@@ -61,8 +56,6 @@ export default function TestRequestForm() {
     // submission items
     const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
     const [submissionStatus, set_submissionStatus] = useState('');
-
-    const navigate = useNavigate();
 
     // init the form is valid flag
     let formIsValid = true;
@@ -399,7 +392,7 @@ export default function TestRequestForm() {
                 .then(res => { return res.json(); })
                 .then(data => { console.log(data); })
                 .then(response => set_submissionStatus(`Submitted the "${test_RequestName}" request.`))
-                .then(navigate(`/WatchStatus?request-name=${test_RequestName}`))
+                .then(window.open(`${window.location.origin}/WatchStatus?request-name=${test_RequestName}`, '_blank'))
                 .catch(err => set_submissionStatus(err))
                 .catch(error => set_submissionStatus(error));
         }
