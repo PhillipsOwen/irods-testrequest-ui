@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import {
     Button, Form, FormGroup, Input, Dropdown,
     DropdownMenu, DropdownToggle, Container,
-    Row, Col, InputGroupText, InputGroup, Label
+    Row, Col, InputGroupText, InputGroup, ButtonGroup
 } from 'reactstrap';
 
 import GetTestTypeData from '../data/GetDropDownData.jsx';
@@ -17,77 +17,56 @@ export default function TestRequestForm() {
     /**
      * this class renders the form to capture users' selection for a test request.
      */
-    // the name of the test request group
-    const [test_RequestName, set_test_RequestName] =  useState('');
-     
+        // the name of the test request group
+    const [test_RequestName, set_test_RequestName] = useState('');
+
     // the package directory name
     const [test_PackageDirectoryName, set_test_PackageDirectoryName] = useState('');
 
     // list of the test names
-    const [test_ProviderNames, set_test_ProviderNames] = useState([]);
-    const [test_ConsumerNames, set_test_ConsumerNames] = useState([]);
-    const [test_ProviderChecked, set_testProviderChecked] = useState(false);
-    const [test_ConsumerChecked, set_testConsumerChecked] = useState(false);
+    const [test_Names, set_test_Names] = useState([]);
 
     // the type of test controllers
-    const [test_TypeName, set_test_TypeName] = useState('');
-    const [test_TypeOpen, set_test_TypeOpen] = useState(false);
-    const [test_TypeNameSelected, set_test_TypeNameSelected] = useState('Select a test type');
+    const [test_EnvironmentTypeName, set_EnvironmentTypeName] = useState(null);
+    const [test_EnvironmentTypeOpen, set_test_EnvironmentTypeOpen] = useState(false);
+    const [test_EnvironmentTypeSelected, set_test_EnvironmentTypeSelected] = useState('Select an environment type');
 
     // the OS controllers
-    const [os_ImageName, set_os_ImageName] = useState('');
+    const [os_ImageName, set_os_ImageName] = useState(null);
     const [os_ImageOpen, set_os_ImageOpen] = useState(false);
-    const [os_ImageNameSelected, set_os_ImageNameSelected] = useState('Select a OS');
+    const [os_ImageNameSelected, set_os_ImageNameSelected] = useState('Select an operating system');
 
     // the DBMS controllers
-    const [dbms_ImageName, set_dbms_ImageName] = useState('');
+    const [dbms_ImageName, set_dbms_ImageName] = useState(null);
     const [dbms_ImageOpen, set_dbms_ImageOpen] = useState(false);
-    const [dbms_ImageNameSelected, set_dbms_ImageNameSelected] = useState('Select a DBMS');
+    const [dbms_ImageNameSelected, set_dbms_ImageNameSelected] = useState('Select a database type');
     const [dbms_TypeName, set_dbms_TypeName] = useState('');
 
+    // set the test location controllers
+    const [test_ExecutorName, set_test_ExecutorName] = useState(null);
+
     // validation state values
-    const [test_RequestNameState, set_test_RequestNameState] = useState('has-success');
+    const [test_RequestNameState, set_test_RequestNameState] = useState('');
+    const [environment_TypeState, set_environment_TypeState] = useState('primary');
     const [dbms_NameState, set_dbms_NameState] = useState('primary');
     const [os_NameState, set_os_NameState] = useState('primary');
-    const [type_NameState, set_type_NameState] = useState('primary');
-    const [test_ProviderNameState, set_test_ProviderNameState] = useState('has-success');
-    const [test_ConsumerNameState, set_test_ConsumerNameState] = useState('has-success');
+    const [test_ExecutorConsumerState, set_test_ExecutorConsumerState] = useState('secondary');
+    const [test_ExecutorProviderState, set_test_ExecutorProviderState] = useState('secondary');
+    const [test_NameState, set_test_NameState] = useState('has-success');
 
     // submission items
-    const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
-    const [submissionStatus, set_submissionStatus] = useState('');
+    const [submissionStatus, set_submissionStatus] = useState(null);
 
     // init the form is valid flag
     let formIsValid = true;
 
-    const change_testProviderChecked = (value) => {
-        /**
-         * sets the current state of the checkbox
-         */
-        set_testProviderChecked(value)
-    }
-
-    const change_testConsumerChecked = (value) => {
-        /**
-         * sets the current state of the checkbox
-         */
-        set_testConsumerChecked(value)
-    }
-
-    const change_enableDebugModeChecked = (value) => {
-        /**
-         * sets the current state of debug mode
-         */
-        set_enableDebugModeChecked(value);
-    }
-
-    const toggle_TestType = () => {
+    const toggle_EnvironmentType = () => {
         /**
          * toggles the state of the test type name pulldown
          */
 
         // save the new state of the control
-        set_test_TypeOpen(!test_TypeOpen);
+        set_test_EnvironmentTypeOpen(!test_EnvironmentTypeOpen);
     }
 
     const toggle_osType = () => {
@@ -108,16 +87,16 @@ export default function TestRequestForm() {
         set_dbms_ImageOpen(!dbms_ImageOpen);
     }
 
-    const change_TestTypeSelectValue = (value) => {
+    const change_environmentTypeSelectValue = (value) => {
         /**
-         * on change event handler for the test type name dropdown control
+         * on change event handler for the environment type name dropdown control
          */
 
         // update the test type name in the class state
-        set_test_TypeName(value);
+        set_EnvironmentTypeName(value);
 
         // update the test type name selected in the class state
-        set_test_TypeNameSelected(value);
+        set_test_EnvironmentTypeSelected(value);
     }
 
     const change_osTypeSelectValue = (value) => {
@@ -147,30 +126,26 @@ export default function TestRequestForm() {
         set_dbms_TypeName(value.split(":")[0].toLowerCase());
     }
 
-    const change_ProviderTestsSelectValues = (e) => {
+    const change_ExecutorSelection = (value) => {
         /**
-         * on change event handler for the test name selection control
+         * sets the test executor selection
          */
 
-        // init some variables for the capture selections
-        let opts = [], opt;
+        // save the change
+        set_test_ExecutorName(value)
 
-        // for each item
-        for (let i = 0, len = e.target.options.length; i < len; i++) {
-            // capture the option object
-            opt = e.target.options[i];
-
-            // is the option selected?
-            if (opt.selected)
-                // save the option
-                opts.push(opt.value);
+        // set the button color
+        if (value === 'CONSUMER') {
+            set_test_ExecutorConsumerState('success')
+            set_test_ExecutorProviderState('secondary')
         }
-
-        // update the test names in the class state
-        set_test_ProviderNames(opts);
+        else {
+            set_test_ExecutorProviderState('success')
+            set_test_ExecutorConsumerState('secondary')
+        }
     }
 
-    const change_ConsumerTestsSelectValues = (e) => {
+    const change_TestsSelectValues = (e) => {
         /**
          * on change event handler for the test name selection control
          */
@@ -190,7 +165,7 @@ export default function TestRequestForm() {
         }
 
         // update the test names in the class state
-        set_test_ConsumerNames(opts);
+        set_test_Names(opts);
     }
 
     const handleTest_RequestNameChange = (e) => {
@@ -223,15 +198,15 @@ export default function TestRequestForm() {
         /**
          * Validates the data entered by the user.
          */
-        // init a validation status text
+            // init a validation status text
         let submission_status = 'There were issues with your submission:\n';
 
-        // check the group name
+        // check the request group name
         if (test_RequestName === '') {
             set_test_RequestNameState('has-danger');
 
             // set the error message
-            submission_status += ' - A Request Name required.\n';
+            submission_status += ' - A Request Name is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -239,12 +214,25 @@ export default function TestRequestForm() {
             set_test_RequestNameState('has-success');
         }
 
-        // check the test type name
-        if (os_ImageNameSelected.toUpperCase() === 'Select a OS'.toUpperCase()) {
+        // check the environment type
+        if (test_EnvironmentTypeSelected.toUpperCase() === 'Select an environment type'.toUpperCase()) {
+            set_environment_TypeState('danger');
+
+            // set the error message
+            submission_status += ' - An environment type is required.\n';
+
+            // set the failure flag
+            formIsValid &= false;
+        } else {
+            set_environment_TypeState('primary');
+        }
+
+        // check the operating system type
+        if (os_ImageNameSelected.toUpperCase() === 'Select an operating system'.toUpperCase()) {
             set_os_NameState('danger');
 
             // set the error message
-            submission_status += ' - An OS Image Name is required.\n';
+            submission_status += ' - An operating system type is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -252,12 +240,12 @@ export default function TestRequestForm() {
             set_os_NameState('primary');
         }
 
-        // check the test type name
-        if (dbms_ImageNameSelected.toUpperCase() === 'Select a DBMS'.toUpperCase()) {
+        // check the database type
+        if (dbms_ImageNameSelected.toUpperCase() === 'Select a database type'.toUpperCase()) {
             set_dbms_NameState('danger');
 
             // set the error message
-            submission_status += ' - A DBMS Image Name is required.\n';
+            submission_status += ' - A database type is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -265,57 +253,50 @@ export default function TestRequestForm() {
             set_dbms_NameState('primary');
         }
 
-        // check the test type name
-        if (test_TypeNameSelected.toUpperCase() === 'Select a test type'.toUpperCase()) {
-            set_type_NameState('danger');
+        // check the test executor location
+        if (test_ExecutorName === null) {
+            set_test_ExecutorConsumerState('danger');
+            set_test_ExecutorProviderState('danger');
 
             // set the error message
-            submission_status += ' - A Test Type Name is required.\n';
+            submission_status += ' - A test executor location is required.\n';
 
             // set the failure flag
             formIsValid &= false;
-        } else {
-            set_type_NameState('primary');
+        } else if (test_ExecutorName === 'CONSUMER') {
+            set_test_ExecutorConsumerState('success');
+            set_test_ExecutorProviderState('secondary');
+        }
+        else if (test_ExecutorName === 'PROVIDER') {
+            set_test_ExecutorProviderState('success');
+            set_test_ExecutorConsumerState('secondary');
         }
 
         // check the provider test names
-        if (test_ProviderNames.length === 0 && test_ProviderChecked) {
-            set_test_ProviderNameState('has-danger');
+        if (test_Names.length === 0) {
+            set_test_NameState('has-danger');
 
             // set the error message
-            submission_status += ' - One or more Provider tests are required.\n';
+            submission_status += ' - One or more tests are required.\n';
 
             // set the failure flag
             formIsValid &= false;
         } else {
-            set_test_ProviderNameState('has-success');
-        }
-
-        // check the consumer test names
-        if (test_ConsumerNames.length === 0 && test_ConsumerChecked) {
-            set_test_ConsumerNameState('has-danger');
-
-            // set the error message
-            submission_status += ' - One or more Consumer tests are required.\n';
-
-            // set the failure flag
-            formIsValid &= false;
-        } else {
-            set_test_ConsumerNameState('has-success');
+            set_test_NameState('has-success');
         }
 
         // log the captured results to the console
-        console.log(`FormIsValid: ${formIsValid}, Request: ${test_RequestName}, suite: ${test_TypeName}, provider tests: ${test_ProviderNames}, \
-        consumer tests: ${test_ConsumerNames}, os: ${os_ImageName}, dbms: ${dbms_ImageName}, package dir: ${test_PackageDirectoryName}`);
+        console.log(`FormIsValid: ${formIsValid}, Request name: ${test_RequestName}, Environment type: ${test_EnvironmentTypeName}, \
+        os: ${os_ImageName}, dbms: ${dbms_ImageName}, package dir: ${test_PackageDirectoryName}, test location: ${test_ExecutorName}, \
+        tests: ${test_Names}`);
 
-        console.log(`RequestNameState: ${test_RequestNameState}, dbms_NameState: ${dbms_NameState}, os_NameState: ${os_NameState}, \
-        type_NameState: ${type_NameState}, ConsumerNameState: ${test_ConsumerNameState}, ProviderNameState: ${test_ProviderNameState}`);
+        console.log(`RequestNameState: ${test_RequestNameState}, environment_TypeState: ${environment_TypeState}, dbms_NameState: ${dbms_NameState}, \
+        os_NameState: ${os_NameState}, NameState: ${test_NameState}`);
 
         // alert the user
         if (!formIsValid) {
             set_submissionStatus(submission_status);
-        }
-        else {
+        } else {
             set_submissionStatus('Submission sent.');
         }
 
@@ -328,29 +309,15 @@ export default function TestRequestForm() {
          * creates a build request to submit to the DB
          */
 
-        // build up the tests
-        const tests = [];
-        let run_mode = 'new';
+        // build up the test request
+        const tests = { [test_ExecutorName]: test_Names }
 
-        // if the provider is checked, then add the tests
-        if (test_ProviderChecked) {
-            tests.push({'PROVIDER': test_ProviderNames});
-        }
-
-        // if the consumer is checked, then add the tests
-        if (test_ConsumerChecked) {
-            tests.push({'CONSUMER': test_ConsumerNames});
-        }
-
-        // use the debug mode checkbox data on the submission
-        if (enableDebugModeChecked) run_mode = 'debug';
-
-        // force the json to be HTL compatible
+        // force the json to be HTML compatible
         const newTests = JSON.stringify(tests);
 
         // return the request to the caller
         return process.env.REACT_APP_BASE_DATA_URL +
-            `superv_workflow_request/${test_TypeName}/run_status/${run_mode}` +
+            `superv_workflow_request/${test_EnvironmentTypeName}/run_status/new` +
             `?package_dir=${encodeURIComponent(test_PackageDirectoryName)}` +
             `&db_type=${dbms_TypeName}` +
             `&db_image=${encodeURIComponent(dbms_ImageName)}` +
@@ -389,9 +356,13 @@ export default function TestRequestForm() {
 
             // make the request
             fetch(URL, requestOptions)
-                .then(res => { return res.json(); })
-                .then(data => { console.log(data); })
-                .then(response => set_submissionStatus(`Submitted the "${test_RequestName}" request.`))
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    set_submissionStatus(`Submitted the "${test_RequestName}" request. Response:\n"${JSON.stringify(data, null, 2)}"`)
+                })
                 .then(window.open(`${window.location.origin}/WatchStatus?request-name=${test_RequestName}`, '_blank'))
                 .catch(err => set_submissionStatus(err))
                 .catch(error => set_submissionStatus(error));
@@ -399,13 +370,14 @@ export default function TestRequestForm() {
     }
 
     const ShowSubmissionResults = () => {
-    /**
-     * displays the submission results
-     */
+        /**
+         * displays the submission results
+         */
         // return the control
         return (
             <>
-                <Input type="textarea" disabled={true} defaultValue={submissionStatus} rows="8"></Input>
+                <Input type="textarea" disabled={true} defaultValue={submissionStatus} placeholder="Submit your request and see the results here..."
+                       rows="6"></Input>
                 <br/>
             </>
         )
@@ -421,15 +393,15 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            Request name
-                                        </InputGroupText>
+                                        <InputGroupText style={{width: "200px"}}> Request name </InputGroupText>
 
                                         <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
                                                placeholder="Enter a request name"
                                                valid={test_RequestNameState === "has-success"}
                                                invalid={test_RequestNameState === "has-danger"}
-                                               onChange={(e) => { handleTest_RequestNameChange(e) }}>
+                                               onChange={(e) => {
+                                                   handleTest_RequestNameChange(e)
+                                               }}>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -440,13 +412,14 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            Package directory name
-                                        </InputGroupText>
+                                        <InputGroupText style={{width: "200px"}}> Package directory name </InputGroupText>
 
-                                        <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName" value={test_PackageDirectoryName}
-                                               placeholder="Enter a package directory name"
-                                               onChange={(e) => { handleTest_PackageDirectoryNameChange(e) }}>
+                                        <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
+                                               value={test_PackageDirectoryName}
+                                               placeholder="Enter a package directory name (optional)"
+                                               onChange={(e) => {
+                                                   handleTest_PackageDirectoryNameChange(e)
+                                               }}>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -457,13 +430,12 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            Test type
-                                        </InputGroupText>
-                                        <Dropdown style={{width: "100px"}} isOpen={test_TypeOpen} toggle={toggle_TestType}>
-                                            <DropdownToggle caret color={type_NameState}>{test_TypeNameSelected || 'null'}</DropdownToggle>
+                                        <InputGroupText style={{width: "200px"}}> Test environment </InputGroupText>
+                                        <Dropdown style={{width: "100px"}} isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
+                                            <DropdownToggle caret
+                                                            color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
-                                                <GetTestTypeData data_name={'get_test_type_names'} on_click={change_TestTypeSelectValue}/>
+                                                <GetTestTypeData data_name={'get_environment_type_names'} on_click={change_environmentTypeSelectValue}/>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </InputGroup>
@@ -475,10 +447,8 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            Operating system
-                                        </InputGroupText>
-                                        <Dropdown style={{width: "100px"}} isOpen={os_ImageOpen} toggle={toggle_osType}>
+                                        <InputGroupText style={{width: "200px"}}> Operating system </InputGroupText>
+                                        <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
                                             <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
                                                 <GetTestTypeData data_name={'get_os_image_names'} on_click={change_osTypeSelectValue}/>
@@ -493,10 +463,8 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            DBMS
-                                        </InputGroupText>
-                                        <Dropdown style={{width: "100px"}} isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
+                                        <InputGroupText style={{width: "200px"}}> Database type </InputGroupText>
+                                        <Dropdown style={{width: "200px"}} isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
                                             <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
                                                 <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
@@ -511,24 +479,20 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            <Label check inline={"true"}>
-                                                <Input
-                                                    name="testProviderChk"
-                                                    id="testProviderChk"
-                                                    type="checkbox"
-                                                    onChange={(e) => change_testProviderChecked(e.target.checked)} />
-                                                &nbsp;Enable provider tests
-                                            </Label>
-                                        </InputGroupText>
-
-                                        <Input type="select" name="testsProviderMulti" id="testsProviderMulti" multiple disabled={!test_ProviderChecked}
-                                               onChange={change_ProviderTestsSelectValues}
-                                               valid={test_ProviderNameState === "has-success"}
-                                               invalid={test_ProviderNameState === "has-danger"}>
-
-                                            <GetTestNameData />
-                                        </Input>
+                                        <InputGroupText style={{width: "200px"}}> Test executor </InputGroupText>
+                                        <ButtonGroup>
+                                            {/*(https://6-4-0--reactstrap.netlify.app/components/buttons/)*/}
+                                            <Button color={test_ExecutorConsumerState}
+                                                    active={test_ExecutorName === 'CONSUMER'}
+                                                    style={{width: "150px"}}
+                                                    onClick={() => change_ExecutorSelection('CONSUMER')}>
+                                                CONSUMER</Button>
+                                            <Button color={test_ExecutorProviderState}
+                                                    active={test_ExecutorName === 'PROVIDER'}
+                                                    style={{width: "150px"}}
+                                                    onClick={() => change_ExecutorSelection('PROVIDER')}>
+                                                PROVIDER</Button>
+                                        </ButtonGroup>
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
@@ -538,22 +502,14 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText>
-                                            <Label check inline={"true"}>
-                                                <Input
-                                                    name="testConsumerChk"
-                                                    id="testConsumerChk"
-                                                    type="checkbox"
-                                                    onChange={(e) => change_testConsumerChecked(e.target.checked)} />
-                                                &nbsp;Enable consumer tests
-                                            </Label>
-                                        </InputGroupText>
+                                        <InputGroupText style={{width: "200px"}}>Select test(s) to execute </InputGroupText>
 
-                                        <Input type="select" name="testsConsumerMulti" id="testsConsumerMulti" multiple disabled={!test_ConsumerChecked}
-                                               onChange={change_ConsumerTestsSelectValues}
-                                               valid={test_ConsumerNameState === "has-success"}
-                                               invalid={test_ConsumerNameState === "has-danger"}>
-                                            <GetTestNameData />
+                                        <Input type="select" name="testsProviderMulti" id="testsProviderMulti" multiple
+                                               onChange={change_TestsSelectValues}
+                                               valid={test_NameState === "has-success"}
+                                               invalid={test_NameState === "has-danger"}
+                                               size="15">
+                                            <GetTestNameData/>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -562,33 +518,12 @@ export default function TestRequestForm() {
 
                         <Row>
                             <Col style={{align: "center"}}>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText>
-                                            <Label check inline={"true"}>
-                                                <Input
-                                                    name="enableDebugModeChk"
-                                                    id="enableDebugModeChk"
-                                                    type="checkbox"
-                                                    onChange={(e) =>
-                                                        change_enableDebugModeChecked(e.target.checked)} />
-                                                &nbsp;Enable debug mode
-                                            </Label>
-                                        </InputGroupText>
-
-                                        <Button style={{width: "100"}} color={"primary"}>Submit</Button>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                        <Row>
-                            <Col>
                                 <InputGroupText>
-                                    Submission results &nbsp;
+                                    <Button style={{width: "100"}} color={"primary"}>Submit your request</Button> &nbsp;
                                     <ShowSubmissionResults/>
                                 </InputGroupText>
                                 <br/>
                             </Col>
-                        </Row>
                         </Row>
                     </Form>
                 </Row>
