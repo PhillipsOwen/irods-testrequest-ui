@@ -5,9 +5,11 @@
 import React, {useState} from 'react';
 
 import {
-    Button, Form, FormGroup, Input, Dropdown,
-    DropdownMenu, DropdownToggle, Container,
-    Row, Col, InputGroupText, InputGroup, ButtonGroup
+    Container, Row, Col,
+    Button, ButtonGroup,
+    Dropdown, DropdownMenu, DropdownToggle,
+    Form, FormGroup,
+    Input, InputGroupText, InputGroup
 } from 'reactstrap';
 
 import GetTestTypeData from '../data/GetDropDownData.jsx';
@@ -22,9 +24,6 @@ export default function TestRequestForm() {
 
     // the package directory name
     const [test_PackageDirectoryName, set_test_PackageDirectoryName] = useState('');
-
-    // list of the test names
-    const [test_Names, set_test_Names] = useState([]);
 
     // the type of test controllers
     const [test_EnvironmentTypeName, set_EnvironmentTypeName] = useState(null);
@@ -44,6 +43,9 @@ export default function TestRequestForm() {
 
     // set the test location controllers
     const [test_ExecutorName, set_test_ExecutorName] = useState(null);
+
+    // list of the test names
+    const [test_Names, set_test_Names] = useState([]);
 
     // validation state values
     const [test_RequestNameState, set_test_RequestNameState] = useState('');
@@ -69,6 +71,39 @@ export default function TestRequestForm() {
         set_test_EnvironmentTypeOpen(!test_EnvironmentTypeOpen);
     }
 
+    const toggle_TestNamesSelected = (el) => {
+        /**
+         * selects all or clears the selected test names
+         */
+        // select all the tests if there are none selected
+        if (test_Names.length === 0) {
+            // define a list for all the options
+            let options = []
+
+            // for each option
+            for (let i = 0, len = document.getElementById("testsNamesMulti").length; i < len; i++) {
+                // set the option selected
+                document.getElementById("testsNamesMulti")[i].selected=true;
+
+                // save the options
+                options.push(document.getElementById("testsNamesMulti")[i].label)
+            }
+
+            // set the options in state
+            set_test_Names(options);
+        }
+        // else clear all the selections
+        else {
+            // for each option
+            for (let i = 0, len = document.getElementById("testsNamesMulti").length; i < len; i++) {
+                // un-select it
+                document.getElementById("testsNamesMulti")[i].selected=false;
+            }
+
+            // clear the state
+            set_test_Names([]);
+        }
+    }
     const toggle_osType = () => {
         /**
          * toggles the state of the os type name pulldown
@@ -206,7 +241,7 @@ export default function TestRequestForm() {
             set_test_RequestNameState('has-danger');
 
             // set the error message
-            submission_status += ' - A Request Name is required.\n';
+            submission_status += ' - A request name is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -264,8 +299,20 @@ export default function TestRequestForm() {
             // set the failure flag
             formIsValid &= false;
         } else if (test_ExecutorName === 'CONSUMER') {
-            set_test_ExecutorConsumerState('success');
-            set_test_ExecutorProviderState('secondary');
+            // tests cant be run on a consumer when the environment is "CORE"
+            if (test_EnvironmentTypeSelected === 'CORE') {
+                set_test_ExecutorConsumerState('danger');
+                set_test_ExecutorProviderState('secondary');
+
+                submission_status += ' - CORE test environments do not support CONSUMER test executors.\n';
+
+                // set the failure flag
+                formIsValid &= false;
+            }
+            else {
+                set_test_ExecutorConsumerState('success');
+                set_test_ExecutorProviderState('secondary');
+            }
         }
         else if (test_ExecutorName === 'PROVIDER') {
             set_test_ExecutorProviderState('success');
@@ -431,7 +478,7 @@ export default function TestRequestForm() {
                                 <FormGroup>
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Test environment </InputGroupText>
-                                        <Dropdown style={{width: "100px"}} isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
+                                        <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
                                             <DropdownToggle caret
                                                             color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
@@ -464,7 +511,7 @@ export default function TestRequestForm() {
                                 <FormGroup>
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Database type </InputGroupText>
-                                        <Dropdown style={{width: "200px"}} isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
+                                        <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
                                             <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
                                                 <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
@@ -481,17 +528,16 @@ export default function TestRequestForm() {
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Test executor </InputGroupText>
                                         <ButtonGroup>
-                                            {/*(https://6-4-0--reactstrap.netlify.app/components/buttons/)*/}
-                                            <Button color={test_ExecutorConsumerState}
-                                                    active={test_ExecutorName === 'CONSUMER'}
-                                                    style={{width: "150px"}}
-                                                    onClick={() => change_ExecutorSelection('CONSUMER')}>
-                                                CONSUMER</Button>
                                             <Button color={test_ExecutorProviderState}
                                                     active={test_ExecutorName === 'PROVIDER'}
                                                     style={{width: "150px"}}
                                                     onClick={() => change_ExecutorSelection('PROVIDER')}>
                                                 PROVIDER</Button>
+                                            <Button color={test_ExecutorConsumerState}
+                                                    active={test_ExecutorName === 'CONSUMER'}
+                                                    style={{width: "150px"}}
+                                                    onClick={() => change_ExecutorSelection('CONSUMER')}>
+                                                CONSUMER</Button>
                                         </ButtonGroup>
                                     </InputGroup>
                                 </FormGroup>
@@ -502,15 +548,20 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "200px"}}>Select test(s) to execute </InputGroupText>
+                                        <InputGroupText style={{width: "200px"}}>Select test(s) to execute</InputGroupText>
 
-                                        <Input type="select" name="testsProviderMulti" id="testsProviderMulti" multiple
+                                        <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
                                                onChange={change_TestsSelectValues}
                                                valid={test_NameState === "has-success"}
                                                invalid={test_NameState === "has-danger"}
                                                size="15">
-                                            <GetTestNameData/>
+                                            <GetTestNameData />
                                         </Input>
+
+                                        <InputGroupText style={{width: "160px"}}>
+                                            <Button color={"primary"}
+                                                    onClick={() => toggle_TestNamesSelected()}>Select All/None</Button>
+                                        </InputGroupText>
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
@@ -518,11 +569,14 @@ export default function TestRequestForm() {
 
                         <Row>
                             <Col style={{align: "center"}}>
-                                <InputGroupText>
-                                    <Button style={{width: "100"}} color={"primary"}>Submit your request</Button> &nbsp;
+                                <InputGroup>
+                                    <InputGroupText style={{width: "200px"}}>
+                                    <Button color={"primary"}>Submit your request</Button> &nbsp;
+
+                                    </InputGroupText>
+
                                     <ShowSubmissionResults/>
-                                </InputGroupText>
-                                <br/>
+                                </InputGroup>
                             </Col>
                         </Row>
                     </Form>
