@@ -32,7 +32,7 @@ import {Link} from "react-router-dom";
                             <div>
                                 <nav>
                                     <Link style={{color: "White", align: "left", marginRight: "100px"}} to="/">Request a new test run</Link>
-                                    <Link style={{color: "White", align: "left"}} to="/WatchStatus">Follow the run state</Link>
+                                    <Link style={{color: "White", align: "left"}} to="/WatchStatus">Follow the run progress</Link>
                                 </nav>
                             </div>
                         </div>
