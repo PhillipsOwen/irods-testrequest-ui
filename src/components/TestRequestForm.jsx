@@ -463,7 +463,7 @@ export default function TestRequestForm() {
 
                                         <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                                value={test_PackageDirectoryName}
-                                               placeholder="Enter a package directory name (optional)"
+                                               placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
                                                onChange={(e) => {
                                                    handleTest_PackageDirectoryNameChange(e)
                                                }}>
