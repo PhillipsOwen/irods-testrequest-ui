@@ -7,7 +7,8 @@ import './App.css';
 import TestRequestForm from './components/TestRequestForm.jsx'
 import PageHeader from "./components/PageHeader.jsx";
 import {Route, Routes} from "react-router-dom";
-import WatchStatus from "./components/WatchStatus";
+import WatchStatus from "./components/WatchStatus.jsx";
+import About from "./components/About.jsx";
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<TestRequestForm/>}/>
                     <Route path="/WatchStatus" element={<WatchStatus/>}/>
+                    <Route path="/About" element={<About/>}/>
                 </Routes>
             </div>
         </>

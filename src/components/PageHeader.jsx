@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
             <>
                 <Navbar style={{backgroundColor: '#18bc9c'}} expand="xs" className="border-bottom border-gray">
                     <Col className="d-flex justify-content-start">
-                        <NavbarBrand href="https://www.irods.org">
+                        <NavbarBrand href="/About">
                             <img alt="logo" src={process.env.PUBLIC_URL + '/iRODS-Logo-RTM_white.png'} style={{height: 40}}/>
                         </NavbarBrand>
                     </Col>
