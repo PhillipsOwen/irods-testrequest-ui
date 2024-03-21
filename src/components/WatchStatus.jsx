@@ -2,8 +2,16 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 
-import {Button, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {
+    Button,
+    Container,
+    Dropdown, DropdownMenu, DropdownToggle,
+    Form, FormGroup,
+    Input, InputGroup, InputGroupText,
+    Row
+} from "reactstrap";
 import React, {useEffect, useState} from 'react';
+import GetTestTypeData from "../data/GetDropDownData";
 
 export default function WatchStatus() {
 
@@ -18,9 +26,34 @@ export default function WatchStatus() {
     const inRequestName = queryParams.get("request-name");
 
     // define the state variables
-    const [test_RequestName, set_test_RequestName] = useState(inRequestName);
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
+    
+    const [test_RequestName, set_test_RequestName] = useState(inRequestName);
+    const [test_RequestOpen, set_test_RequestOpen] = useState(false);
+
+    const toggle_TestRequest = () => {
+        /**
+         * toggles the state of the test type name pulldown
+         */
+
+        // save the new state of the control
+        set_test_RequestOpen(!test_RequestOpen);
+    }
+
+    const change_TestRequestSelectValue = (value) => {
+        /**
+         * on change event handler for the testRequest type name dropdown control
+         */
+
+        // update the test type name in the class state
+        set_test_RequestName(value);
+
+        setScanning(false);
+
+        // save the message
+        // setStatusMsg(null);
+    }
 
     // set the request header
     const requestOptions = {
@@ -135,36 +168,44 @@ export default function WatchStatus() {
     /**
      * render the page
      */
-    return (<>
-        <Container className='mt-4'>
-            <Row>
-                <Form className="form" onSubmit={(e) => handleSubmit(e)}>
-                    <FormGroup>
-                        <InputGroup>
-                            <InputGroupText>
-                                Enter the test request name &nbsp;
-                            </InputGroupText>
 
-                            <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
-                                   placeholder="Enter a request name"
-                                   onChange={(e) => {handleTest_RequestNameChange(e)}}>
-                            </Input>
+    return (
+        <div style={{backgroundColor: "#18bc9c"}}>
+            <Container className='mt-4'>
+                <Row><br/></Row>
+                <Row>
+                    <Form className="form" onSubmit={(e) => handleSubmit(e)}>
+                        <FormGroup>
+                            <InputGroup>
+                                <Dropdown isOpen={test_RequestOpen} toggle={toggle_TestRequest}>
+                                    <DropdownToggle caret color={"success"}>Select or enter a test request name</DropdownToggle>
 
-                            <Button style={{width: "100"}} color={"primary"}>Submit</Button>
-                        </InputGroup>
-                    </FormGroup>
-                </Form>
-            </Row>
-            <Row>
-                <StatusPollingText/>
-            </Row>
-            <Row>
-                <InputGroupText>
-                    Test request progress &nbsp;
-                    <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="15"/>
-                </InputGroupText>
+                                    <DropdownMenu container="body">
+                                        <GetTestTypeData data_name={'get_test_request_names'} on_click={change_TestRequestSelectValue}/>
+                                    </DropdownMenu>
+                                </Dropdown>
 
-            </Row>
-        </Container>
-    </>);
+                                <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
+                                       placeholder="Enter a request name"
+                                       onChange={(e) => {handleTest_RequestNameChange(e)}}>
+                                </Input>
+
+                                <Button style={{width: "100"}} color={"success"}>Submit</Button>
+                            </InputGroup>
+                        </FormGroup>
+                    </Form>
+                </Row>
+                <Row>
+                    <StatusPollingText/>
+                </Row>
+                <Row>
+                    <InputGroupText>
+                        Test request progress &nbsp;
+                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="15"/>
+                    </InputGroupText>
+                </Row>
+                <Row><br/></Row>
+            </Container>
+        </div>
+    );
 }
