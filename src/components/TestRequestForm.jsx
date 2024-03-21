@@ -435,8 +435,8 @@ export default function TestRequestForm() {
     // #18bc9c light
     return (
         <div style={{backgroundColor: "#18bc9c"}}>
+            <br/>
             <Container className='mt-3'>
-                <Row><br/></Row>
                 <Row>
                     <Form className="form" onSubmit={(e) => handleSubmit(e)}>
                         <Row>
@@ -449,7 +449,9 @@ export default function TestRequestForm() {
                                                placeholder="Enter a request name"
                                                valid={test_RequestNameState === "has-success"}
                                                invalid={test_RequestNameState === "has-danger"}
-                                               onChange={(e) => {  handleTest_RequestNameChange(e) }}>
+                                               onChange={(e) => {
+                                                   handleTest_RequestNameChange(e)
+                                               }}>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -465,7 +467,9 @@ export default function TestRequestForm() {
                                         <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                                value={test_PackageDirectoryName}
                                                placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
-                                               onChange={(e) => { handleTest_PackageDirectoryNameChange(e) }}>
+                                               onChange={(e) => {
+                                                   handleTest_PackageDirectoryNameChange(e)
+                                               }}>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -479,9 +483,11 @@ export default function TestRequestForm() {
                                         <InputGroupText style={{width: "200px"}}> Test environment </InputGroupText>
 
                                         <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
-                                            <DropdownToggle caret color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
+                                            <DropdownToggle caret
+                                                            color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
-                                                <GetTestTypeData data_name={'get_environment_type_names'} on_click={change_environmentTypeSelectValue}/>
+                                                <GetTestTypeData data_name={'get_environment_type_names'}
+                                                                 on_click={change_environmentTypeSelectValue}/>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </InputGroup>
@@ -583,8 +589,8 @@ export default function TestRequestForm() {
                         </Row>
                     </Form>
                 </Row>
-                <Row><br/></Row>
             </Container>
+            <br/>
         </div>
     );
 }
