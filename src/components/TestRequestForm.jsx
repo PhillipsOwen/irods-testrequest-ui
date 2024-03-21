@@ -49,9 +49,9 @@ export default function TestRequestForm() {
 
     // validation state values
     const [test_RequestNameState, set_test_RequestNameState] = useState('');
-    const [environment_TypeState, set_environment_TypeState] = useState('primary');
-    const [dbms_NameState, set_dbms_NameState] = useState('primary');
-    const [os_NameState, set_os_NameState] = useState('primary');
+    const [environment_TypeState, set_environment_TypeState] = useState('success');
+    const [dbms_NameState, set_dbms_NameState] = useState('success');
+    const [os_NameState, set_os_NameState] = useState('success');
     const [test_ExecutorConsumerState, set_test_ExecutorConsumerState] = useState('secondary');
     const [test_ExecutorProviderState, set_test_ExecutorProviderState] = useState('secondary');
     const [test_NameState, set_test_NameState] = useState('has-success');
@@ -71,7 +71,7 @@ export default function TestRequestForm() {
         set_test_EnvironmentTypeOpen(!test_EnvironmentTypeOpen);
     }
 
-    const toggle_TestNamesSelected = (el) => {
+    const toggle_TestNamesSelected = () => {
         /**
          * selects all or clears the selected test names
          */
@@ -431,9 +431,12 @@ export default function TestRequestForm() {
 
     };
 
+    // #0a534e dark
+    // #18bc9c light
     return (
-        <>
+        <div style={{backgroundColor: "#18bc9c"}}>
             <Container className='mt-3'>
+                <Row><br/></Row>
                 <Row>
                     <Form className="form" onSubmit={(e) => handleSubmit(e)}>
                         <Row>
@@ -446,9 +449,7 @@ export default function TestRequestForm() {
                                                placeholder="Enter a request name"
                                                valid={test_RequestNameState === "has-success"}
                                                invalid={test_RequestNameState === "has-danger"}
-                                               onChange={(e) => {
-                                                   handleTest_RequestNameChange(e)
-                                               }}>
+                                               onChange={(e) => {  handleTest_RequestNameChange(e) }}>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -464,9 +465,7 @@ export default function TestRequestForm() {
                                         <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                                value={test_PackageDirectoryName}
                                                placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
-                                               onChange={(e) => {
-                                                   handleTest_PackageDirectoryNameChange(e)
-                                               }}>
+                                               onChange={(e) => { handleTest_PackageDirectoryNameChange(e) }}>
                                         </Input>
                                     </InputGroup>
                                 </FormGroup>
@@ -478,9 +477,9 @@ export default function TestRequestForm() {
                                 <FormGroup>
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Test environment </InputGroupText>
+
                                         <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
-                                            <DropdownToggle caret
-                                                            color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
+                                            <DropdownToggle caret color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
                                             <DropdownMenu container="body">
                                                 <GetTestTypeData data_name={'get_environment_type_names'} on_click={change_environmentTypeSelectValue}/>
                                             </DropdownMenu>
@@ -495,8 +494,10 @@ export default function TestRequestForm() {
                                 <FormGroup>
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Operating system </InputGroupText>
+
                                         <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
                                             <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
+
                                             <DropdownMenu container="body">
                                                 <GetTestTypeData data_name={'get_os_image_names'} on_click={change_osTypeSelectValue}/>
                                             </DropdownMenu>
@@ -511,8 +512,10 @@ export default function TestRequestForm() {
                                 <FormGroup>
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Database type </InputGroupText>
+
                                         <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
                                             <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
+
                                             <DropdownMenu container="body">
                                                 <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
                                             </DropdownMenu>
@@ -527,6 +530,7 @@ export default function TestRequestForm() {
                                 <FormGroup>
                                     <InputGroup>
                                         <InputGroupText style={{width: "200px"}}> Test executor </InputGroupText>
+
                                         <ButtonGroup>
                                             <Button color={test_ExecutorProviderState}
                                                     active={test_ExecutorName === 'PROVIDER'}
@@ -552,15 +556,14 @@ export default function TestRequestForm() {
 
                                         <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
                                                onChange={change_TestsSelectValues}
-                                               valid={test_NameState === "has-success"}
+                                               valid={test_NameState === "primary"}
                                                invalid={test_NameState === "has-danger"}
                                                size="15">
-                                            <GetTestNameData />
+                                            <GetTestNameData/>
                                         </Input>
 
                                         <InputGroupText style={{width: "160px"}}>
-                                            <Button color={"primary"}
-                                                    onClick={() => toggle_TestNamesSelected()}>Select All/None</Button>
+                                            <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>Select All/None</Button>
                                         </InputGroupText>
                                     </InputGroup>
                                 </FormGroup>
@@ -571,8 +574,7 @@ export default function TestRequestForm() {
                             <Col style={{align: "center"}}>
                                 <InputGroup>
                                     <InputGroupText style={{width: "200px"}}>
-                                    <Button color={"primary"}>Submit your request</Button> &nbsp;
-
+                                        <Button color={"success"}>Submit your request</Button> &nbsp;
                                     </InputGroupText>
 
                                     <ShowSubmissionResults/>
@@ -581,7 +583,8 @@ export default function TestRequestForm() {
                         </Row>
                     </Form>
                 </Row>
+                <Row><br/></Row>
             </Container>
-        </>
+        </div>
     );
 }
