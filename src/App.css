@@ -6,7 +6,6 @@
 
 .App {
   text-align: center;
-  background-color: #0a534e;
 }
 
 .App-logo {
@@ -29,6 +28,11 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.footer {
+  background-color: #0a534e;
+  text-align: right;
 }
 
 .App-link {
