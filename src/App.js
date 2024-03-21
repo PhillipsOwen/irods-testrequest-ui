@@ -9,18 +9,19 @@ import PageHeader from "./components/PageHeader.jsx";
 import {Route, Routes} from "react-router-dom";
 import WatchStatus from "./components/WatchStatus.jsx";
 import About from "./components/About.jsx";
+import PageFooter from "./components/PageFooter";
 
 const App = () => {
     return (
         <>
             <div className='App'>
                 <PageHeader/>
-
-                <Routes>
-                    <Route path="/" element={<TestRequestForm/>}/>
-                    <Route path="/WatchStatus" element={<WatchStatus/>}/>
-                    <Route path="/About" element={<About/>}/>
-                </Routes>
+                    <Routes>
+                        <Route path="/" element={<TestRequestForm/>}/>
+                        <Route path="/WatchStatus" element={<WatchStatus/>}/>
+                        <Route path="/About" element={<About/>}/>
+                    </Routes>
+                <PageFooter/>
             </div>
         </>
     );
