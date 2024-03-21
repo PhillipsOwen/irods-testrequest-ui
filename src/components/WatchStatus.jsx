@@ -134,7 +134,7 @@ export default function WatchStatus() {
 
         // return the control
         return (<>
-            <p/>
+            <br/>
             <div style={{align: "left"}}>
                 <h4 style={{color: "white"}}>{message}</h4>
             </div>
@@ -172,7 +172,7 @@ export default function WatchStatus() {
     return (
         <div style={{backgroundColor: "#18bc9c"}}>
             <Container className='mt-4'>
-                <Row><br/></Row>
+                <br/>
                 <Row>
                     <Form className="form" onSubmit={(e) => handleSubmit(e)}>
                         <FormGroup>
@@ -204,7 +204,7 @@ export default function WatchStatus() {
                         <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="15"/>
                     </InputGroupText>
                 </Row>
-                <Row><br/></Row>
+                <br/>
             </Container>
         </div>
     );
