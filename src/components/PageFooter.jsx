@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 
-import {Col, Container, Navbar, NavbarBrand, Row} from "reactstrap";
+import {Container, Navbar, Row} from "reactstrap";
 import {Link} from "react-router-dom";
 
 export default function PageFooter(){
