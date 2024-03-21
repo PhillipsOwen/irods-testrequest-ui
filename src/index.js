@@ -17,9 +17,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const app = ReactDOM.createRoot(document.getElementById('app'));
 
-root.render(
+app.render(
   <Router>
     <App />
   </Router>
