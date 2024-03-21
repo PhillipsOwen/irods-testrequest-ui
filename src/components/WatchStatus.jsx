@@ -29,7 +29,7 @@ export default function WatchStatus() {
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
     
-    const [test_RequestName, set_test_RequestName] = useState(inRequestName);
+    const [test_RequestName, set_test_RequestName] = useState(inRequestName || '');
     const [test_RequestOpen, set_test_RequestOpen] = useState(false);
 
     const toggle_TestRequest = () => {
@@ -178,7 +178,7 @@ export default function WatchStatus() {
                         <FormGroup>
                             <InputGroup>
                                 <Dropdown isOpen={test_RequestOpen} toggle={toggle_TestRequest}>
-                                    <DropdownToggle caret color={"success"}>Select or enter a test request name</DropdownToggle>
+                                    <DropdownToggle caret color={"success"}>Select test request name</DropdownToggle>
 
                                     <DropdownMenu container="body">
                                         <GetTestTypeData data_name={'get_test_request_names'} on_click={change_TestRequestSelectValue}/>
