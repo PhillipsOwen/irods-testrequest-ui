@@ -201,7 +201,7 @@ export default function WatchStatus() {
                 <Row>
                     <InputGroupText>
                         Test request progress &nbsp;
-                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="15"/>
+                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="27"/>
                     </InputGroupText>
                 </Row>
                 <br/>
