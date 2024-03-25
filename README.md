@@ -24,3 +24,10 @@ The iRODS-K8s Test Request UI is a Node.js/React website used to submit a test r
 The iRODS-K8s Test Request UI product allows a user to create and submit a test request and watch its progression through K8s.
 
 Standard Node.js/React build rules apply.
+
+### How to build the Docker image for this product
+
+ - docker build --build-arg APP_VERSION=Test -f Dockerfile -t irods-k8s-supervisor:latest .
+ - This image must be placed in a container image registry and referenced in this component's Helm scripts.
+
+Helm/k8s charts for this product are available at: [iRODS K8s Helm](https://github.com/irods/irods_k8s/tree/main/helm/irods-testrequest-ui).
