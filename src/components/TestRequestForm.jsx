@@ -443,7 +443,7 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}> Request name </InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}> Request name </InputGroupText>
 
                                         <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
                                                placeholder="Enter a request name"
@@ -462,11 +462,12 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}> Package directory </InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}> Package directory </InputGroupText>
 
                                         <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                                value={test_PackageDirectoryName}
                                                placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
+                                               valid="has-success"
                                                onChange={(e) => {
                                                    handleTest_PackageDirectoryNameChange(e)
                                                }}>
@@ -480,7 +481,7 @@ export default function TestRequestForm() {
                             <Col className="d-flex justify-content-start">
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}> Test environment </InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}> Test environment </InputGroupText>
 
                                         <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
                                             <DropdownToggle caret
@@ -496,7 +497,7 @@ export default function TestRequestForm() {
                             <Col className="d-flex justify-content-end">
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}> Operating system </InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}> Operating system </InputGroupText>
 
                                         <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
                                             <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
@@ -514,7 +515,7 @@ export default function TestRequestForm() {
                             <Col className="d-flex justify-content-start">
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}> Database type </InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}> Database type </InputGroupText>
 
                                         <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
                                             <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
@@ -529,7 +530,7 @@ export default function TestRequestForm() {
                             <Col className="d-flex justify-content-end">
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}> Test executor </InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}> Test executor </InputGroupText>
 
                                         <ButtonGroup>
                                             <Button color={test_ExecutorProviderState}
@@ -552,7 +553,7 @@ export default function TestRequestForm() {
                             <Col>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupText style={{width: "150px"}}>Select test(s)</InputGroupText>
+                                        <InputGroupText style={{width: "160px"}}>Select test(s)</InputGroupText>
 
                                         <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
                                                onChange={change_TestsSelectValues}
@@ -573,7 +574,7 @@ export default function TestRequestForm() {
                         <Row>
                             <Col>
                                 <InputGroup>
-                                    <InputGroupText style={{width: "150px"}}>
+                                    <InputGroupText style={{width: "160px"}}>
                                         <Button color={"success"}>Submit request</Button> &nbsp;
                                     </InputGroupText>
 
