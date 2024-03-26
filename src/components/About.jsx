@@ -55,7 +55,7 @@ export default function About() {
                                                 <li>PostgreSQL v15.4</li>
                                             </ul>
 
-                                        <li>Development tools</li>
+                                        <li>Development environment</li>
                                             <ul>
                                                 <li>Python v3.12.2</li>
                                                 <li>PyLint v3.1.0</li>
@@ -75,6 +75,7 @@ export default function About() {
                                             <ul>
                                                 <li>Server v1.27.10</li>
                                                 <li>Client v1.28.7</li>
+                                                <li>API v28.1.0</li>
                                                 <li>Helm v3.12.1</li>
                                             </ul>
                                     </ul>
