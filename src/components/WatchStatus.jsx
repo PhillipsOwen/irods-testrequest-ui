@@ -3,12 +3,11 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 import {
-    Button,
-    Container,
-    Dropdown, DropdownMenu, DropdownToggle,
+    Container, Row,
     Form, FormGroup,
-    Input, InputGroup, InputGroupText,
-    Row
+    Dropdown, DropdownMenu, DropdownToggle,
+    Button, Input, InputGroup
+
 } from "reactstrap";
 import React, {useEffect, useState} from 'react';
 import GetTestTypeData from "../data/GetDropDownData";
@@ -135,7 +134,7 @@ export default function WatchStatus() {
         // return the control
         return (<>
             <br/>
-            <div style={{align: "left"}}>
+            <div style={{textAlign: "left"}}>
                 <h4 style={{color: "white"}}>{message}</h4>
             </div>
             <br/>
@@ -171,14 +170,13 @@ export default function WatchStatus() {
 
     return (
         <div style={{backgroundColor: "#18bc9c"}}>
-            <Container className='mt-4'>
-                <br/>
-                <Row>
-                    <Form className="form" onSubmit={(e) => handleSubmit(e)}>
+            <Container className='mt-3'>
+                <Form className="form" onSubmit={(e) => handleSubmit(e)}>
+                    <Row>
                         <FormGroup>
                             <InputGroup>
                                 <Dropdown isOpen={test_RequestOpen} toggle={toggle_TestRequest}>
-                                    <DropdownToggle caret color={"success"}>Select test request name</DropdownToggle>
+                                    <DropdownToggle caret color={"success"}>Test request name</DropdownToggle>
 
                                     <DropdownMenu container="body">
                                         <GetTestTypeData data_name={'get_test_request_names'} on_click={change_TestRequestSelectValue}/>
@@ -186,26 +184,27 @@ export default function WatchStatus() {
                                 </Dropdown>
 
                                 <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
-                                       placeholder="Enter a request name"
-                                       onChange={(e) => {handleTest_RequestNameChange(e)}}>
+                                       placeholder="Select or enter a test request name"
+                                       onChange={(e) => {
+                                           handleTest_RequestNameChange(e)
+                                       }}>
                                 </Input>
 
                                 <Button style={{width: "100"}} color={"success"}>Submit</Button>
                             </InputGroup>
                         </FormGroup>
-                    </Form>
-                </Row>
-                <Row>
-                    <StatusPollingText/>
-                </Row>
-                <Row>
-                    <InputGroupText>
-                        Test request progress &nbsp;
-                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="27"/>
-                    </InputGroupText>
-                </Row>
-                <br/>
+                    </Row>
+
+                    <Row>
+                        <StatusPollingText/>
+                    </Row>
+
+                    <Row>
+                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="26"/>
+                    </Row>
+                </Form>
             </Container>
+            <br/>
         </div>
     );
 }

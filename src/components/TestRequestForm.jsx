@@ -423,7 +423,7 @@ export default function TestRequestForm() {
         // return the control
         return (
             <>
-                <Input type="textarea" disabled={true} defaultValue={submissionStatus} placeholder="Submit your request and see the results here..."
+                <Input type="textarea" disabled={true} defaultValue={submissionStatus} placeholder="Submit your request..."
                        rows="6"></Input>
                 <br/>
             </>
@@ -437,153 +437,144 @@ export default function TestRequestForm() {
         <div style={{backgroundColor: "#18bc9c"}}>
             <Container className='mt-3'>
                 <br/>
-                <Row>
-                    <Form className="form" onSubmit={(e) => handleSubmit(e)}>
-                        <Row>
-                            <Col>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}> Request name </InputGroupText>
 
-                                        <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
-                                               placeholder="Enter a request name"
-                                               valid={test_RequestNameState === "has-success"}
-                                               invalid={test_RequestNameState === "has-danger"}
-                                               onChange={(e) => {
-                                                   handleTest_RequestNameChange(e)
-                                               }}>
-                                        </Input>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                        </Row>
+                <Form className="form" onSubmit={(e) => handleSubmit(e)}>
+                    <Row>
+                        <FormGroup>
+                            <InputGroup>
+                                <InputGroupText style={{width: "160px"}}> Request name </InputGroupText>
 
-                        <Row>
-                            <Col>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}> Package directory </InputGroupText>
+                                <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
+                                       placeholder="Enter a request name"
+                                       valid={test_RequestNameState === "has-success"}
+                                       invalid={test_RequestNameState === "has-danger"}
+                                       onChange={(e) => {
+                                           handleTest_RequestNameChange(e)
+                                       }}>
+                                </Input>
+                            </InputGroup>
+                        </FormGroup>
+                    </Row>
 
-                                        <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
-                                               value={test_PackageDirectoryName}
-                                               placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
-                                               valid="has-success"
-                                               onChange={(e) => {
-                                                   handleTest_PackageDirectoryNameChange(e)
-                                               }}>
-                                        </Input>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                        </Row>
+                    <Row>
+                        <FormGroup>
+                            <InputGroup>
+                                <InputGroupText style={{width: "160px"}}> Package directory </InputGroupText>
 
-                        <Row>
-                            <Col className="d-flex justify-content-start">
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}> Test environment </InputGroupText>
+                                <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
+                                       value={test_PackageDirectoryName}
+                                       placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
+                                       valid={true}
+                                       onChange={(e) => {
+                                           handleTest_PackageDirectoryNameChange(e)
+                                       }}>
+                                </Input>
+                            </InputGroup>
+                        </FormGroup>
+                    </Row>
 
-                                        <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
-                                            <DropdownToggle caret
-                                                            color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
-                                            <DropdownMenu container="body">
-                                                <GetTestTypeData data_name={'get_environment_type_names'}
-                                                                 on_click={change_environmentTypeSelectValue}/>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                            <Col className="d-flex justify-content-end">
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}> Operating system </InputGroupText>
-
-                                        <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
-                                            <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
-
-                                            <DropdownMenu container="body">
-                                                <GetTestTypeData data_name={'get_os_image_names'} on_click={change_osTypeSelectValue}/>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col className="d-flex justify-content-start">
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}> Database type </InputGroupText>
-
-                                        <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
-                                            <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
-
-                                            <DropdownMenu container="body">
-                                                <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                            <Col className="d-flex justify-content-end">
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}> Test executor </InputGroupText>
-
-                                        <ButtonGroup>
-                                            <Button color={test_ExecutorProviderState}
-                                                    active={test_ExecutorName === 'PROVIDER'}
-                                                    style={{width: "115px"}}
-                                                    onClick={() => change_ExecutorSelection('PROVIDER')}>
-                                                PROVIDER</Button>
-                                            <Button color={test_ExecutorConsumerState}
-                                                    active={test_ExecutorName === 'CONSUMER'}
-                                                    style={{width: "115px"}}
-                                                    onClick={() => change_ExecutorSelection('CONSUMER')}>
-                                                CONSUMER</Button>
-                                        </ButtonGroup>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroupText style={{width: "160px"}}>Select test(s)</InputGroupText>
-
-                                        <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
-                                               onChange={change_TestsSelectValues}
-                                               valid={test_NameState === "primary"}
-                                               invalid={test_NameState === "has-danger"}
-                                               size="15">
-                                            <GetTestNameData/>
-                                        </Input>
-
-                                        <InputGroupText style={{width: "160px"}}>
-                                            <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>Select All/None</Button>
-                                        </InputGroupText>
-                                    </InputGroup>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col>
+                    <Row>
+                        <Col className="d-flex justify-content-start">
+                            <FormGroup>
                                 <InputGroup>
-                                    <InputGroupText style={{width: "160px"}}>
-                                        <Button color={"success"}>Submit request</Button> &nbsp;
-                                    </InputGroupText>
+                                    <InputGroupText style={{width: "160px"}}> Test environment </InputGroupText>
 
-                                    <ShowSubmissionResults/>
+                                    <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
+                                        <DropdownToggle caret
+                                                        color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
+                                        <DropdownMenu container="body">
+                                            <GetTestTypeData data_name={'get_environment_type_names'}
+                                                             on_click={change_environmentTypeSelectValue}/>
+                                        </DropdownMenu>
+                                    </Dropdown>
                                 </InputGroup>
-                            </Col>
-                        </Row>
-                    </Form>
-                </Row>
+                            </FormGroup>
+                        </Col>
+                        <Col className="d-flex justify-content-end">
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputGroupText style={{width: "160px"}}> Operating system </InputGroupText>
+
+                                    <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
+                                        <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
+
+                                        <DropdownMenu container="body">
+                                            <GetTestTypeData data_name={'get_os_image_names'} on_click={change_osTypeSelectValue}/>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </InputGroup>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col className="d-flex justify-content-start">
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputGroupText style={{width: "160px"}}> Database type </InputGroupText>
+
+                                    <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
+                                        <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
+
+                                        <DropdownMenu container="body">
+                                            <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </InputGroup>
+                            </FormGroup>
+                        </Col>
+                        <Col className="d-flex justify-content-end">
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputGroupText style={{width: "160px"}}> Test executor </InputGroupText>
+
+                                    <ButtonGroup>
+                                        <Button color={test_ExecutorProviderState}
+                                                active={test_ExecutorName === 'PROVIDER'}
+                                                style={{width: "115px"}}
+                                                onClick={() => change_ExecutorSelection('PROVIDER')}>
+                                            PROVIDER</Button>
+                                        <Button color={test_ExecutorConsumerState}
+                                                active={test_ExecutorName === 'CONSUMER'}
+                                                style={{width: "115px"}}
+                                                onClick={() => change_ExecutorSelection('CONSUMER')}>
+                                            CONSUMER</Button>
+                                    </ButtonGroup>
+                                </InputGroup>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <FormGroup>
+                            <InputGroup>
+                                <InputGroupText style={{width: "160px"}}>Select test(s)</InputGroupText>
+
+                                <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
+                                       onChange={change_TestsSelectValues}
+                                       valid={test_NameState === "primary"}
+                                       invalid={test_NameState === "has-danger"}
+                                       size="15">
+                                    <GetTestNameData/>
+                                </Input>
+
+                                <InputGroupText style={{width: "160px"}}>
+                                    <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>Select All/None</Button>
+                                </InputGroupText>
+                            </InputGroup>
+                        </FormGroup>
+                    </Row>
+
+                    <Row>
+                        <InputGroup>
+                            <InputGroupText style={{width: "160px"}}>
+                                <Button color={"success"}>Submit request</Button> &nbsp;
+                            </InputGroupText>
+
+                            <ShowSubmissionResults/>
+                        </InputGroup>
+                    </Row>
+                </Form>
                 <br/>
             </Container>
         </div>
