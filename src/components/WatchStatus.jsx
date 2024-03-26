@@ -171,6 +171,7 @@ export default function WatchStatus() {
     return (
         <div style={{backgroundColor: "#18bc9c"}}>
             <Container className='mt-3'>
+            <br/>
                 <Form className="form" onSubmit={(e) => handleSubmit(e)}>
                     <Row>
                         <FormGroup>
