@@ -17,7 +17,9 @@ export default function PageFooter() {
                         </Col>
 
                         <Col className="d-flex justify-content-center">
-                            <img alt="logo" src={process.env.PUBLIC_URL + '/favicon.png'} style={{backgroundColor: "white", height: 20}}/>
+                            <Link style={{textAlign: "center", color: "white"}} to="https://www.irods.org/">
+                                <img alt="logo" src={process.env.PUBLIC_URL + '/favicon.png'} style={{backgroundColor: "white", height: 20}}/>
+                            </Link>
                         </Col>
 
                         <Col className="d-flex justify-content-end">
