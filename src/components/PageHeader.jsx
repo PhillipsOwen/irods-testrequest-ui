@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 
-import {Col, Row, Navbar, NavbarBrand} from 'reactstrap';
+import {Col, Navbar, NavbarBrand} from 'reactstrap';
 import {Link} from "react-router-dom";
 
     export default function PageHeader() {
