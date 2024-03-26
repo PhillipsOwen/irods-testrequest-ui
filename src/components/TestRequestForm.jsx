@@ -254,7 +254,7 @@ export default function TestRequestForm() {
             set_environment_TypeState('danger');
 
             // set the error message
-            submission_status += ' - An environment type is required.\n';
+            submission_status += ' - A test environment type is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -294,7 +294,7 @@ export default function TestRequestForm() {
             set_test_ExecutorProviderState('danger');
 
             // set the error message
-            submission_status += ' - A test executor location is required.\n';
+            submission_status += ' - A test executor is required.\n';
 
             // set the failure flag
             formIsValid &= false;
@@ -331,14 +331,6 @@ export default function TestRequestForm() {
         } else {
             set_test_NameState('has-success');
         }
-
-        // log the captured results to the console
-        console.log(`FormIsValid: ${formIsValid}, Request name: ${test_RequestName}, Environment type: ${test_EnvironmentTypeName}, \
-        os: ${os_ImageName}, dbms: ${dbms_ImageName}, package dir: ${test_PackageDirectoryName}, test location: ${test_ExecutorName}, \
-        tests: ${test_Names}`);
-
-        console.log(`RequestNameState: ${test_RequestNameState}, environment_TypeState: ${environment_TypeState}, dbms_NameState: ${dbms_NameState}, \
-        os_NameState: ${os_NameState}, NameState: ${test_NameState}`);
 
         // alert the user
         if (!formIsValid) {
@@ -404,15 +396,28 @@ export default function TestRequestForm() {
             // make the request
             fetch(URL, requestOptions)
                 .then(res => {
-                    return res.json();
+                    // check for an error
+                    if(!res.ok)
+                        // throw the error, it will be caught below
+                        throw new Error(res.status);
+                    // else just continue along
+                    else return res.json();
                 })
                 .then(data => {
-                    console.log(data);
-                    set_submissionStatus(`Submitted the "${test_RequestName}" request. Response:\n"${JSON.stringify(data, null, 2)}"`)
+                    // set the result status
+                    set_submissionStatus(`"${test_RequestName}" Submitted. Response:\n"${JSON.stringify(data, null, 2)}"`);
+
+                    // if this was a successful submission
+                    if (data.Success === 'Request successfully submitted.')
+                        // redirect to the status page
+                        window.open(`${window.location.origin}/WatchStatus?request-name=${test_RequestName}`, '_blank');
                 })
-                .then(window.open(`${window.location.origin}/WatchStatus?request-name=${test_RequestName}`, '_blank'))
-                .catch(err => set_submissionStatus(err))
-                .catch(error => set_submissionStatus(error));
+                .catch((error) => {
+                    // output the error to the console
+                    console.log(error);
+                    // set the submission status with the error
+                    set_submissionStatus(error);}
+                );
         }
     }
 
@@ -423,7 +428,7 @@ export default function TestRequestForm() {
         // return the control
         return (
             <>
-                <Input type="textarea" disabled={true} defaultValue={submissionStatus} placeholder="Submit your request..."
+                <Input type="textarea" disabled={true} defaultValue={submissionStatus} placeholder="Submit your request when ready"
                        rows="6"></Input>
                 <br/>
             </>
@@ -463,7 +468,7 @@ export default function TestRequestForm() {
 
                                 <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                        value={test_PackageDirectoryName}
-                                       placeholder="Enter a package directory name (optional, /projects/irods/github-build-artifacts/ presumed)"
+                                       placeholder="Enter a package directory name"
                                        valid={true}
                                        onChange={(e) => {
                                            handleTest_PackageDirectoryNameChange(e)
@@ -558,8 +563,8 @@ export default function TestRequestForm() {
                                     <GetTestNameData/>
                                 </Input>
 
-                                <InputGroupText style={{width: "160px"}}>
-                                    <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>Select All/None</Button>
+                                <InputGroupText style={{width: "110px"}}>
+                                    <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>All/Clear</Button>
                                 </InputGroupText>
                             </InputGroup>
                         </FormGroup>
