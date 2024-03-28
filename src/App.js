@@ -13,17 +13,15 @@ import PageFooter from "./components/PageFooter";
 
 const App = () => {
     return (
-        <>
-            <div className='App'>
-                <PageHeader/>
-                    <Routes>
-                        <Route path="/" element={<TestRequestForm/>}/>
-                        <Route path="/WatchStatus" element={<WatchStatus/>}/>
-                        <Route path="/About" element={<About/>}/>
-                    </Routes>
-                <PageFooter/>
-            </div>
-        </>
+        <div className='App'>
+            <PageHeader/>
+                <Routes>
+                    <Route path="/" element={<TestRequestForm/>}/>
+                    <Route path="/WatchStatus" element={<WatchStatus/>}/>
+                    <Route path="/About" element={<About/>}/>
+                </Routes>
+            <PageFooter/>
+        </div>
     );
 }
 
