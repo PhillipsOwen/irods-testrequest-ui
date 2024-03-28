@@ -7,24 +7,23 @@ import {Link} from "react-router-dom";
 
     export default function PageHeader() {
         return (
-            <div style={{backgroundColor: "#18bc9c"}}>
-                <Navbar expand="xs" className="border-top border-gray">
+            <header>
+                <Navbar className="border-top border-gray">
                     <Col className="d-flex justify-content-start">
-                        <NavbarBrand>
-                            <img alt="logo" src={process.env.PUBLIC_URL + '/iRODS-Logo-RTM_teal_grey.png'} style={{backgroundColor: "white", height: 40}}/>
+                        <NavbarBrand href={"/"}>
+                            <img alt="logo" src={process.env.PUBLIC_URL + '/iRODS-Logo-RTM_teal_grey.png'}/>
                         </NavbarBrand>
 
-                        <NavbarBrand className="d-inline-block p-0">
-                            <h1 style={{color: "white"}}>Test request</h1>
-                        </NavbarBrand>
+                        <NavbarBrand className="d-inline-block p-0"><h1>Test request</h1></NavbarBrand>
                     </Col>
                 </Navbar>
-                <Navbar expand="xs" className="border-top border-bottom border-gray">
-                    <nav>
-                        <Link style={{color: "White", align: "left", marginLeft: "50px", marginRight: "100px"}} to="/">Request a new test run</Link>
-                        <Link style={{color: "White", align: "left"}} to="/WatchStatus">Follow the run progress</Link>
-                    </nav>
+
+                <Navbar className="border-top border-bottom border-gray">
+                    <Col className="d-flex justify-content-start">
+                        <Link className="links" to="/">Request a new test run</Link>
+                        <Link className="links" to="/WatchStatus">Follow the run progress</Link>
+                    </Col>
                 </Navbar>
-            </div>
+            </header>
         );
     }

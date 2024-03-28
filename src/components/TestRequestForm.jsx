@@ -376,8 +376,6 @@ export default function TestRequestForm() {
 
         // validate the data in the controls
         if (validateRequestForm()) {
-            console.log('Validation succeeded.')
-
             // build the request
             const URL = buildTestRequest();
 
@@ -428,7 +426,11 @@ export default function TestRequestForm() {
         // return the control
         return (
             <>
-                <Input type="textarea" disabled={true} defaultValue={submissionStatus} placeholder="Submit your request when ready"
+                <Input className="textarea-border"
+                       type="textarea"
+                       disabled={true}
+                       defaultValue={submissionStatus}
+                       placeholder="Submit your request when ready"
                        rows="6"></Input>
                 <br/>
             </>
@@ -439,15 +441,13 @@ export default function TestRequestForm() {
     // #0a534e dark
     // #18bc9c light
     return (
-        <div style={{backgroundColor: "#18bc9c"}}>
+        <div>
             <Container className='mt-3'>
-                <br/>
-
                 <Form className="form" onSubmit={(e) => handleSubmit(e)}>
                     <Row>
                         <FormGroup>
                             <InputGroup>
-                                <InputGroupText style={{width: "160px"}}> Request name </InputGroupText>
+                                <InputGroupText className="input-group-text"> Request name </InputGroupText>
 
                                 <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
                                        placeholder="Enter a request name"
@@ -464,15 +464,13 @@ export default function TestRequestForm() {
                     <Row>
                         <FormGroup>
                             <InputGroup>
-                                <InputGroupText style={{width: "160px"}}> Package directory </InputGroupText>
+                                <InputGroupText className="input-group-text"> Package directory </InputGroupText>
 
                                 <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                        value={test_PackageDirectoryName}
                                        placeholder="Enter a package directory name"
                                        valid={true}
-                                       onChange={(e) => {
-                                           handleTest_PackageDirectoryNameChange(e)
-                                       }}>
+                                       onChange={(e) => {handleTest_PackageDirectoryNameChange(e)}}>
                                 </Input>
                             </InputGroup>
                         </FormGroup>
@@ -482,7 +480,7 @@ export default function TestRequestForm() {
                         <Col className="d-flex justify-content-start">
                             <FormGroup>
                                 <InputGroup>
-                                    <InputGroupText style={{width: "160px"}}> Test environment </InputGroupText>
+                                    <InputGroupText className="input-group-text"> Test environment </InputGroupText>
 
                                     <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
                                         <DropdownToggle caret
@@ -495,10 +493,11 @@ export default function TestRequestForm() {
                                 </InputGroup>
                             </FormGroup>
                         </Col>
+
                         <Col className="d-flex justify-content-end">
                             <FormGroup>
                                 <InputGroup>
-                                    <InputGroupText style={{width: "160px"}}> Operating system </InputGroupText>
+                                    <InputGroupText className="input-group-text"> Operating system </InputGroupText>
 
                                     <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
                                         <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
@@ -516,7 +515,7 @@ export default function TestRequestForm() {
                         <Col className="d-flex justify-content-start">
                             <FormGroup>
                                 <InputGroup>
-                                    <InputGroupText style={{width: "160px"}}> Database type </InputGroupText>
+                                    <InputGroupText className="input-group-text"> Database type </InputGroupText>
 
                                     <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
                                         <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
@@ -531,17 +530,17 @@ export default function TestRequestForm() {
                         <Col className="d-flex justify-content-end">
                             <FormGroup>
                                 <InputGroup>
-                                    <InputGroupText style={{width: "160px"}}> Test executor </InputGroupText>
+                                    <InputGroupText className="input-group-text"> Test executor type </InputGroupText>
 
                                     <ButtonGroup>
                                         <Button color={test_ExecutorProviderState}
                                                 active={test_ExecutorName === 'PROVIDER'}
-                                                style={{width: "115px"}}
+                                                className="button-size"
                                                 onClick={() => change_ExecutorSelection('PROVIDER')}>
                                             PROVIDER</Button>
                                         <Button color={test_ExecutorConsumerState}
                                                 active={test_ExecutorName === 'CONSUMER'}
-                                                style={{width: "115px"}}
+                                                className="button-size"
                                                 onClick={() => change_ExecutorSelection('CONSUMER')}>
                                             CONSUMER</Button>
                                     </ButtonGroup>
@@ -553,7 +552,7 @@ export default function TestRequestForm() {
                     <Row>
                         <FormGroup>
                             <InputGroup>
-                                <InputGroupText style={{width: "160px"}}>Select test(s)</InputGroupText>
+                                <InputGroupText className="input_group_text">Select test(s)</InputGroupText>
 
                                 <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
                                        onChange={change_TestsSelectValues}
@@ -563,7 +562,7 @@ export default function TestRequestForm() {
                                     <GetTestNameData/>
                                 </Input>
 
-                                <InputGroupText style={{width: "110px"}}>
+                                <InputGroupText className="input-group-text-sm">
                                     <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>All/Clear</Button>
                                 </InputGroupText>
                             </InputGroup>
@@ -572,7 +571,7 @@ export default function TestRequestForm() {
 
                     <Row>
                         <InputGroup>
-                            <InputGroupText style={{width: "160px"}}>
+                            <InputGroupText className="input-group-text">
                                 <Button color={"success"}>Submit request</Button> &nbsp;
                             </InputGroupText>
 

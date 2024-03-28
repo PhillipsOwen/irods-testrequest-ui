@@ -27,7 +27,6 @@ export default function WatchStatus() {
     // define the state variables
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
-    
     const [test_RequestName, set_test_RequestName] = useState(inRequestName || '');
     const [test_RequestOpen, set_test_RequestOpen] = useState(false);
 
@@ -132,13 +131,12 @@ export default function WatchStatus() {
         }
 
         // return the control
-        return (<>
-            <br/>
+        return (
             <div style={{textAlign: "left"}}>
-                <h4 style={{color: "white"}}>{message}</h4>
+                <h4>{message}</h4>
+                <Input className="input-control" type="textarea" disabled={true} defaultValue={statusMsg} rows="26"/>
             </div>
-            <br/>
-        </>)
+        )
     };
 
     const handleSubmit = (e) => {
@@ -169,9 +167,8 @@ export default function WatchStatus() {
      */
 
     return (
-        <div style={{backgroundColor: "#18bc9c"}}>
+        <div>
             <Container className='mt-3'>
-            <br/>
                 <Form className="form" onSubmit={(e) => handleSubmit(e)}>
                     <Row>
                         <FormGroup>
@@ -184,26 +181,23 @@ export default function WatchStatus() {
                                     </DropdownMenu>
                                 </Dropdown>
 
-                                <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
+                                <Input name="test_RequestName"
+                                       type="text"
+                                       id="test_RequestName"
+                                       value={test_RequestName}
                                        placeholder="Select or enter a test request name"
-                                       onChange={(e) => {
-                                           handleTest_RequestNameChange(e)
-                                       }}>
+                                       onChange={(e) => {handleTest_RequestNameChange(e)}}>
                                 </Input>
 
-                                <Button style={{width: "100"}} color={"success"}>Submit</Button>
+                                <Button className="button-size" color={"success"}>Submit</Button>
                             </InputGroup>
                         </FormGroup>
                     </Row>
-
-                    <Row>
-                        <StatusPollingText/>
-                    </Row>
-
-                    <Row>
-                        <Input type="textarea" disabled={true} defaultValue={statusMsg} rows="26"/>
-                    </Row>
                 </Form>
+
+                <Row>
+                    <StatusPollingText/>
+                </Row>
             </Container>
             <br/>
         </div>
