@@ -48,6 +48,9 @@
 *
 * start of custom css for controls used in this app
 *
+* renci greens:
+*   #0a534e dark
+*   #18bc9c light
 */
 header {
   background-color: white !important;
@@ -71,7 +74,7 @@ footer {
 }
 
 img {
- height: 40px;
+ height: 35px;
 }
 
 h1, h2, h3, h4 {
@@ -92,13 +95,11 @@ h1, h2, h3, h4 {
 .input-group-text {
   background-color: lightgray !important;
   width: 160px;
-  /*border-color: black !important;*/
 }
 
 .input-group-text-sm {
   background-color: lightgray !important;
   width: 110px;
-  /*border-color: black !important;*/
 }
 
 .button-size {

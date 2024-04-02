@@ -1,6 +1,7 @@
 // Copyright (c) 2024, The University of North Carolina at Chapel Hill All rights reserved.
 //
 // SPDX-License-Identifier: BSD 3-Clause
+// noinspection JSUnresolvedReference
 
 import React, {useState} from 'react';
 
@@ -8,8 +9,8 @@ import {
     Container, Row, Col,
     Button, ButtonGroup,
     Dropdown, DropdownMenu, DropdownToggle,
-    Form, FormGroup,
-    Input, InputGroupText, InputGroup
+    Form,
+    Input, InputGroupText, InputGroup, Label
 } from 'reactstrap';
 
 import GetTestTypeData from '../data/GetDropDownData.jsx';
@@ -57,6 +58,7 @@ export default function TestRequestForm() {
     const [test_NameState, set_test_NameState] = useState('has-success');
 
     // submission items
+    const [enableDebugModeChecked, set_enableDebugModeChecked] = useState(false);
     const [submissionStatus, set_submissionStatus] = useState(null);
 
     // init the form is valid flag
@@ -69,6 +71,13 @@ export default function TestRequestForm() {
 
         // save the new state of the control
         set_test_EnvironmentTypeOpen(!test_EnvironmentTypeOpen);
+    }
+
+    const change_enableDebugModeChecked = (value) => {
+        /**
+         * sets the current state of debug mode
+         */
+        set_enableDebugModeChecked(value);
     }
 
     const toggle_TestNamesSelected = () => {
@@ -259,7 +268,7 @@ export default function TestRequestForm() {
             // set the failure flag
             formIsValid &= false;
         } else {
-            set_environment_TypeState('primary');
+            set_environment_TypeState('success');
         }
 
         // check the operating system type
@@ -272,7 +281,7 @@ export default function TestRequestForm() {
             // set the failure flag
             formIsValid &= false;
         } else {
-            set_os_NameState('primary');
+            set_os_NameState('success');
         }
 
         // check the database type
@@ -285,7 +294,7 @@ export default function TestRequestForm() {
             // set the failure flag
             formIsValid &= false;
         } else {
-            set_dbms_NameState('primary');
+            set_dbms_NameState('success');
         }
 
         // check the test executor location
@@ -347,16 +356,20 @@ export default function TestRequestForm() {
         /**
          * creates a build request to submit to the DB
          */
+        let run_mode = 'new';
 
         // build up the test request
         const tests = { [test_ExecutorName]: test_Names }
+
+        // use the debug mode checkbox data on the submission
+        if (enableDebugModeChecked) run_mode = 'debug';
 
         // force the json to be HTML compatible
         const newTests = JSON.stringify(tests);
 
         // return the request to the caller
         return process.env.REACT_APP_BASE_DATA_URL +
-            `superv_workflow_request/${test_EnvironmentTypeName}/run_status/new` +
+            `superv_workflow_request/${test_EnvironmentTypeName}/run_status/${run_mode}` +
             `?package_dir=${encodeURIComponent(test_PackageDirectoryName)}` +
             `&db_type=${dbms_TypeName}` +
             `&db_image=${encodeURIComponent(dbms_ImageName)}` +
@@ -398,7 +411,7 @@ export default function TestRequestForm() {
                     if(!res.ok)
                         // throw the error, it will be caught below
                         throw new Error(res.status);
-                    // else just continue along
+                    // else continue along
                     else return res.json();
                 })
                 .then(data => {
@@ -438,16 +451,14 @@ export default function TestRequestForm() {
 
     };
 
-    // #0a534e dark
-    // #18bc9c light
     return (
         <div>
-            <Container className='mt-3'>
+            <Container fluid>
                 <Form className="form" onSubmit={(e) => handleSubmit(e)}>
-                    <Row>
-                        <FormGroup>
+                    <Row className={"pt-2 pb-1"}>
+                        <Col>
                             <InputGroup>
-                                <InputGroupText className="input-group-text"> Request name </InputGroupText>
+                                <InputGroupText className={"input-group-text"}>Request name</InputGroupText>
 
                                 <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
                                        placeholder="Enter a request name"
@@ -458,13 +469,28 @@ export default function TestRequestForm() {
                                        }}>
                                 </Input>
                             </InputGroup>
-                        </FormGroup>
+                        </Col>
+
+                        <Col>
+                            <InputGroup>
+                                <InputGroupText className={"input-group-text"}>Test environment</InputGroupText>
+
+                                <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
+                                    <DropdownToggle caret
+                                                    color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
+                                    <DropdownMenu container="body">
+                                        <GetTestTypeData data_name={'get_environment_type_names'}
+                                                         on_click={change_environmentTypeSelectValue}/>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </InputGroup>
+                        </Col>
                     </Row>
 
-                    <Row>
-                        <FormGroup>
+                    <Row className={"pb-1"}>
+                        <Col>
                             <InputGroup>
-                                <InputGroupText className="input-group-text"> Package directory </InputGroupText>
+                                <InputGroupText className={"input-group-text"}>Package directory</InputGroupText>
 
                                 <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                        value={test_PackageDirectoryName}
@@ -473,110 +499,107 @@ export default function TestRequestForm() {
                                        onChange={(e) => {handleTest_PackageDirectoryNameChange(e)}}>
                                 </Input>
                             </InputGroup>
-                        </FormGroup>
-                    </Row>
-
-                    <Row>
-                        <Col className="d-flex justify-content-start">
-                            <FormGroup>
-                                <InputGroup>
-                                    <InputGroupText className="input-group-text"> Test environment </InputGroupText>
-
-                                    <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
-                                        <DropdownToggle caret
-                                                        color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
-                                        <DropdownMenu container="body">
-                                            <GetTestTypeData data_name={'get_environment_type_names'}
-                                                             on_click={change_environmentTypeSelectValue}/>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </InputGroup>
-                            </FormGroup>
                         </Col>
 
-                        <Col className="d-flex justify-content-end">
-                            <FormGroup>
-                                <InputGroup>
-                                    <InputGroupText className="input-group-text"> Operating system </InputGroupText>
-
-                                    <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
-                                        <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
-
-                                        <DropdownMenu container="body">
-                                            <GetTestTypeData data_name={'get_os_image_names'} on_click={change_osTypeSelectValue}/>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </InputGroup>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col className="d-flex justify-content-start">
-                            <FormGroup>
-                                <InputGroup>
-                                    <InputGroupText className="input-group-text"> Database type </InputGroupText>
-
-                                    <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
-                                        <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
-
-                                        <DropdownMenu container="body">
-                                            <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </InputGroup>
-                            </FormGroup>
-                        </Col>
-                        <Col className="d-flex justify-content-end">
-                            <FormGroup>
-                                <InputGroup>
-                                    <InputGroupText className="input-group-text"> Test executor type </InputGroupText>
-
-                                    <ButtonGroup>
-                                        <Button color={test_ExecutorProviderState}
-                                                active={test_ExecutorName === 'PROVIDER'}
-                                                className="button-size"
-                                                onClick={() => change_ExecutorSelection('PROVIDER')}>
-                                            PROVIDER</Button>
-                                        <Button color={test_ExecutorConsumerState}
-                                                active={test_ExecutorName === 'CONSUMER'}
-                                                className="button-size"
-                                                onClick={() => change_ExecutorSelection('CONSUMER')}>
-                                            CONSUMER</Button>
-                                    </ButtonGroup>
-                                </InputGroup>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <FormGroup>
+                        <Col>
                             <InputGroup>
-                                <InputGroupText className="input_group_text">Select test(s)</InputGroupText>
+                                <InputGroupText className={"input-group-text"}>Test executor type</InputGroupText>
+
+                                <ButtonGroup>
+                                    <Button color={test_ExecutorProviderState}
+                                            active={test_ExecutorName === 'PROVIDER'}
+                                            className="button-size"
+                                            onClick={() => change_ExecutorSelection('PROVIDER')}>
+                                        PROVIDER</Button>
+                                    <Button className={"button-size"}
+                                            color={test_ExecutorConsumerState}
+                                            active={test_ExecutorName === 'CONSUMER'}
+                                            onClick={() => change_ExecutorSelection('CONSUMER')}>
+                                        CONSUMER</Button>
+                                </ButtonGroup>
+                            </InputGroup>
+                        </Col>
+                    </Row>
+
+                    <Row className={"pb-1"}>
+                        <Col>
+                            <InputGroup>
+                                <InputGroupText className={"input-group-text"}> Operating system </InputGroupText>
+
+                                <Dropdown isOpen={os_ImageOpen} toggle={toggle_osType}>
+                                    <DropdownToggle caret color={os_NameState}>{os_ImageNameSelected || 'null'}</DropdownToggle>
+
+                                    <DropdownMenu container={"body"}>
+                                        <GetTestTypeData data_name={'get_os_image_names'} on_click={change_osTypeSelectValue}/>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </InputGroup>
+                        </Col>
+
+                        <Col>
+                            <InputGroup>
+                                <InputGroupText className={"input-group-text"}> Database type </InputGroupText>
+
+                                <Dropdown isOpen={dbms_ImageOpen} toggle={toggle_dbmsType}>
+                                    <DropdownToggle caret color={dbms_NameState}>{dbms_ImageNameSelected || 'null'}</DropdownToggle>
+
+                                    <DropdownMenu container={"body"}>
+                                        <GetTestTypeData data_name={'get_dbms_image_names'} on_click={change_dbmsImageSelectValue}/>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </InputGroup>
+                        </Col>
+                    </Row>
+
+                    <Row className={"pb-1"}>
+                        <Col>
+                            <InputGroup>
+                                <InputGroupText className={"input_group_text"}>Select test(s)</InputGroupText>
 
                                 <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
                                        onChange={change_TestsSelectValues}
                                        valid={test_NameState === "primary"}
                                        invalid={test_NameState === "has-danger"}
                                        size="15">
+
                                     <GetTestNameData/>
                                 </Input>
 
-                                <InputGroupText className="input-group-text-sm">
+                                <InputGroupText className={"input-group-text-sm"}>
                                     <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>All/Clear</Button>
                                 </InputGroupText>
                             </InputGroup>
-                        </FormGroup>
+                        </Col>
                     </Row>
 
                     <Row>
-                        <InputGroup>
-                            <InputGroupText className="input-group-text">
-                                <Button color={"success"}>Submit request</Button> &nbsp;
-                            </InputGroupText>
+                        <Col>
+                            <InputGroup>
+                                <InputGroupText className={"input-group-text"}>
+                                    <Col>
+                                        <Row className={"pb-1"}>
+                                            <div style={{alignItems: "center"}}>
+                                                <Button color={"success"}>Submit request</Button>
+                                            </div>
+                                        </Row>
 
-                            <ShowSubmissionResults/>
-                        </InputGroup>
+                                        <Row>
+                                            <Label check inline={"true"}>
+                                                <Input
+                                                    name="enableDebugModeChk"
+                                                    id="enableDebugModeChk"
+                                                    type="checkbox"
+                                                    onChange={(e) =>
+                                                        change_enableDebugModeChecked(e.target.checked)}/>
+                                                &nbsp;Debug mode
+                                            </Label>
+                                        </Row>
+                                    </Col>
+                                </InputGroupText>
+
+                                <ShowSubmissionResults/>
+                            </InputGroup>
+                        </Col>
                     </Row>
                 </Form>
                 <br/>
