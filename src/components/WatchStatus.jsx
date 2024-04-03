@@ -27,6 +27,7 @@ export default function WatchStatus() {
     // define the state variables
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
+    const [scanningMsg, setScanningMsg] = useState('Standing by...');
     const [test_RequestName, set_test_RequestName] = useState(inRequestName || '');
     const [test_RequestOpen, set_test_RequestOpen] = useState(false);
 
@@ -87,12 +88,28 @@ export default function WatchStatus() {
 
                     // turn off scanning
                     setScanning(false);
+
+                    // and set the scanning message
+                    setScanningMsg(`Scanning the "${test_RequestName}" request for status updates...`);
                 } else {
                     // save the message
                     setStatusMsg(JSON.stringify(data, null, 2));
 
-                    // enable scanning
-                    setScanning(true);
+                    // if the testing is complete
+                    if (data['Testing Jobs']['Total'] === data['Testing Jobs']['Complete']) {
+                        // enable scanning
+                        setScanning(false);
+
+                        // and set the scanning message
+                        setScanningMsg(`Testing complete...`);
+                    }
+                    else {
+                        // enable scanning
+                        setScanning(true);
+
+                        // and set the scanning message
+                        setScanningMsg(`Scanning the "${test_RequestName}" request for status updates...`);
+                    }
                 }
             }
         } catch (err) {
@@ -116,12 +133,14 @@ export default function WatchStatus() {
         }
     })
 
-
     const handleSubmit = (e) => {
         /**
          * handles the form submission.
          */
         e.preventDefault();
+
+        // and set the scanning message
+        setScanningMsg(``);
 
         // start getting the data
         getStatusData().then();
@@ -144,20 +163,10 @@ export default function WatchStatus() {
         /**
          * display of what request is being polled
          */
-        // init the message storage
-        let message;
-
-        // if we are currently scanning display a message
-        if (scanning === true) {
-            message = `Scanning the "${test_RequestName}" request for status updates...`;
-        } else {
-            message = "Standing by...";
-        }
-
         // return the control
         return (
             <Col className={"pt-3"}>
-                <h4>{message}</h4>
+                <h4>{scanningMsg}</h4>
                 <Input
                     className="input-control"
                     type="textarea"
