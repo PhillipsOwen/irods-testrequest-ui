@@ -14,7 +14,7 @@ import {Link} from "react-router-dom";
                             <img alt="logo" src={process.env.PUBLIC_URL + '/iRODS-Logo-RTM_teal_grey.png'}/>
                         </NavbarBrand>
 
-                        <NavbarBrand className="d-inline-block p-0"><h1>Test request</h1></NavbarBrand>
+                        <NavbarBrand className="d-inline-block p-0"><h1>Test Request</h1></NavbarBrand>
                     </Col>
                 </Navbar>
 
