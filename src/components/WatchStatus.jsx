@@ -48,10 +48,14 @@ export default function WatchStatus() {
         // update the test type name in the class state
         set_test_RequestName(value);
 
+        // set the scanning state
         setScanning(false);
 
-        // save the message
-        // setStatusMsg(null);
+        // and set the scanning message
+        setScanningMsg(`Standing by...`);
+
+        // clear the test results
+        setStatusMsg('')
     }
 
     // set the request header
@@ -90,7 +94,10 @@ export default function WatchStatus() {
                     setScanning(false);
 
                     // and set the scanning message
-                    setScanningMsg(`Scanning the "${test_RequestName}" request for status updates...`);
+                    setScanningMsg(`Standing by...`);
+
+                    // clear out the test results
+                    setStatusMsg('')
                 } else {
                     // save the message
                     setStatusMsg(JSON.stringify(data, null, 2));
@@ -101,7 +108,7 @@ export default function WatchStatus() {
                         setScanning(false);
 
                         // and set the scanning message
-                        setScanningMsg(`Testing complete...`);
+                        setScanningMsg(`"${test_RequestName}" testing complete...`);
                     }
                     else {
                         // enable scanning
