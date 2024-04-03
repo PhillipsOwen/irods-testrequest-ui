@@ -77,9 +77,10 @@ img {
  height: 35px;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
   color: #5a5a5a !important;
   font-weight: bold !important;
+  text-align: left;
 }
 
 .links {

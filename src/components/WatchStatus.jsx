@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 import {
-    Container, Row,
-    Form, FormGroup,
+    Container, Row, Col,
+    Form,
     Dropdown, DropdownMenu, DropdownToggle,
     Button, Input, InputGroup
 
@@ -116,28 +116,6 @@ export default function WatchStatus() {
         }
     })
 
-    const StatusPollingText = () => {
-        /**
-         * display of what request is being polled
-         */
-        // init the message storage
-        let message;
-
-        // if we are currently scanning display a message
-        if (scanning === true) {
-            message = `Polling the "${test_RequestName}" request for status updates...`;
-        } else {
-            message = "Standing by...";
-        }
-
-        // return the control
-        return (
-            <div style={{textAlign: "left"}}>
-                <h4>{message}</h4>
-                <Input className="input-control" type="textarea" disabled={true} defaultValue={statusMsg} rows="26"/>
-            </div>
-        )
-    };
 
     const handleSubmit = (e) => {
         /**
@@ -162,16 +140,43 @@ export default function WatchStatus() {
         set_test_RequestName(target.value);
     };
 
+    const StatusPollingText = () => {
+        /**
+         * display of what request is being polled
+         */
+        // init the message storage
+        let message;
+
+        // if we are currently scanning display a message
+        if (scanning === true) {
+            message = `Scanning the "${test_RequestName}" request for status updates...`;
+        } else {
+            message = "Standing by...";
+        }
+
+        // return the control
+        return (
+            <Col className={"pt-3"}>
+                <h4>{message}</h4>
+                <Input
+                    className="input-control"
+                    type="textarea"
+                    disabled={true}
+                    defaultValue={statusMsg}
+                    rows="22"/>
+            </Col>
+        )
+    };
+
     /**
      * render the page
      */
-
     return (
         <div>
-            <Container className='mt-3'>
+            <Container fluid>
                 <Form className="form" onSubmit={(e) => handleSubmit(e)}>
-                    <Row>
-                        <FormGroup>
+                    <Row className={"pt-2"}>
+                        <Col xs={"8"}>
                             <InputGroup>
                                 <Dropdown isOpen={test_RequestOpen} toggle={toggle_TestRequest}>
                                     <DropdownToggle caret color={"success"}>Test request name</DropdownToggle>
@@ -191,11 +196,11 @@ export default function WatchStatus() {
 
                                 <Button className="button-size" color={"success"}>Submit</Button>
                             </InputGroup>
-                        </FormGroup>
+                        </Col>
                     </Row>
                 </Form>
 
-                <Row>
+                <Row className={"pb-1"}>
                     <StatusPollingText/>
                 </Row>
             </Container>
