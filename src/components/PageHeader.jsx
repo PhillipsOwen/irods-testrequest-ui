@@ -21,7 +21,7 @@ import {Link} from "react-router-dom";
                 <Navbar className="border-top border-bottom border-gray">
                     <Col className="d-flex justify-content-start">
                         <Link className="links" to="/">Request a new test run</Link>
-                        <Link className="links" to="/WatchStatus">Follow the run progress</Link>
+                        <Link className="links" to="/WatchStatus">Follow the testing progress</Link>
                     </Col>
                 </Navbar>
             </header>
