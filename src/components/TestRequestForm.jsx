@@ -458,7 +458,7 @@ export default function TestRequestForm() {
                     <Row className={"pt-2 pb-1"}>
                         <Col>
                             <InputGroup>
-                                <InputGroupText className={"input-group-text"}>Request name</InputGroupText>
+                                <InputGroupText className={"input-group-text"}> Request name </InputGroupText>
 
                                 <Input type="text" name="test_RequestName" id="test_RequestName" value={test_RequestName}
                                        placeholder="Enter a request name"
@@ -473,14 +473,12 @@ export default function TestRequestForm() {
 
                         <Col>
                             <InputGroup>
-                                <InputGroupText className={"input-group-text"}>Test environment</InputGroupText>
+                                <InputGroupText className={"input-group-text"}> Test environment </InputGroupText>
 
                                 <Dropdown isOpen={test_EnvironmentTypeOpen} toggle={toggle_EnvironmentType}>
-                                    <DropdownToggle caret
-                                                    color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
+                                    <DropdownToggle caret color={environment_TypeState}>{test_EnvironmentTypeSelected || 'null'}</DropdownToggle>
                                     <DropdownMenu container="body">
-                                        <GetTestTypeData data_name={'get_environment_type_names'}
-                                                         on_click={change_environmentTypeSelectValue}/>
+                                        <GetTestTypeData data_name={'get_environment_type_names'} on_click={change_environmentTypeSelectValue}/>
                                     </DropdownMenu>
                                 </Dropdown>
                             </InputGroup>
@@ -490,7 +488,7 @@ export default function TestRequestForm() {
                     <Row className={"pb-1"}>
                         <Col>
                             <InputGroup>
-                                <InputGroupText className={"input-group-text"}>Package directory</InputGroupText>
+                                <InputGroupText className={"input-group-text"}> Package directory </InputGroupText>
 
                                 <Input type="text" name="test_PackageDirectoryName" id="test_PackageDirectoryName"
                                        value={test_PackageDirectoryName}
@@ -503,7 +501,7 @@ export default function TestRequestForm() {
 
                         <Col>
                             <InputGroup>
-                                <InputGroupText className={"input-group-text"}>Test executor type</InputGroupText>
+                                <InputGroupText className={"input-group-text"}> Test executor type </InputGroupText>
 
                                 <ButtonGroup>
                                     <Button color={test_ExecutorProviderState}
@@ -554,7 +552,16 @@ export default function TestRequestForm() {
                     <Row className={"pb-1"}>
                         <Col>
                             <InputGroup>
-                                <InputGroupText className={"input_group_text"}>Select test(s)</InputGroupText>
+                                <InputGroupText className={"input_group_text"}>
+                                    <Col>
+                                        <Row className="pb-1 justify-content-center"> Tests </Row>
+                                        <Row className="pt-4">
+                                            <div style={{alignItems: "center"}}>
+                                                <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>Select All/Clear</Button>
+                                            </div>
+                                        </Row>
+                                    </Col>
+                                </InputGroupText>
 
                                 <Input type="select" name="testsNamesMulti" id="testsNamesMulti" multiple
                                        onChange={change_TestsSelectValues}
@@ -564,10 +571,6 @@ export default function TestRequestForm() {
 
                                     <GetTestNameData/>
                                 </Input>
-
-                                <InputGroupText className={"input-group-text-sm"}>
-                                    <Button color={"success"} onClick={() => toggle_TestNamesSelected()}>All/Clear</Button>
-                                </InputGroupText>
                             </InputGroup>
                         </Col>
                     </Row>
@@ -577,13 +580,13 @@ export default function TestRequestForm() {
                             <InputGroup>
                                 <InputGroupText className={"input-group-text"}>
                                     <Col>
-                                        <Row className={"pb-1"}>
+                                        <Row>
                                             <div style={{alignItems: "center"}}>
                                                 <Button color={"success"}>Submit request</Button>
                                             </div>
                                         </Row>
 
-                                        <Row>
+                                        <Row className="pt-4">
                                             <Label check inline={"true"}>
                                                 <Input
                                                     name="enableDebugModeChk"
