@@ -141,6 +141,9 @@ export default function TestRequestForm() {
 
         // update the test type name selected in the class state
         set_test_EnvironmentTypeSelected(value);
+
+        // update the validation color
+        set_environment_TypeState('success');
     }
 
     const change_osTypeSelectValue = (value) => {
@@ -153,6 +156,10 @@ export default function TestRequestForm() {
 
         // update the test type name selected in the class state
         set_os_ImageNameSelected(value);
+
+        // update the validation color
+        set_os_NameState('success');
+
     }
 
     const change_dbmsImageSelectValue = (value) => {
@@ -168,6 +175,9 @@ export default function TestRequestForm() {
 
         // set the DBMS type by the name
         set_dbms_TypeName(value.split(":")[0].toLowerCase());
+
+        // update the validation color
+        set_dbms_NameState('success');
     }
 
     const change_ExecutorSelection = (value) => {
@@ -210,6 +220,9 @@ export default function TestRequestForm() {
 
         // update the test names in the class state
         set_test_Names(opts);
+
+        // update the validation color
+        set_test_NameState('has-success');
     }
 
     const handleTest_RequestNameChange = (e) => {
@@ -223,6 +236,9 @@ export default function TestRequestForm() {
 
         // save the event vale
         set_test_RequestName(target.value);
+
+        // update the validation color
+        set_test_RequestNameState('has-success');
     };
 
     const handleTest_PackageDirectoryNameChange = (e) => {
