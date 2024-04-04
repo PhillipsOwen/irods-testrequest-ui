@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import React, {useEffect, useState} from 'react';
 import GetTestTypeData from "../data/GetDropDownData";
+import {Link} from "react-router-dom";
 
 export default function WatchStatus() {
 
@@ -30,6 +31,8 @@ export default function WatchStatus() {
     const [scanningMsg, setScanningMsg] = useState('Standing by...');
     const [test_RequestName, set_test_RequestName] = useState(inRequestName || '');
     const [test_RequestOpen, set_test_RequestOpen] = useState(false);
+    const [downloadButtonView: boolean, set_download_button_state] = useState(false);
+
 
     const toggle_TestRequest = () => {
         /**
@@ -56,6 +59,9 @@ export default function WatchStatus() {
 
         // clear the test results
         setStatusMsg('')
+
+        // hide the download button
+        set_download_button_state(false);
     }
 
     // set the request header
@@ -96,8 +102,8 @@ export default function WatchStatus() {
                     // and set the scanning message
                     setScanningMsg(`Standing by...`);
 
-                    // clear out the test results
-                    setStatusMsg('')
+                    // hide the download button
+                    set_download_button_state(false);
                 } else {
                     // save the message
                     setStatusMsg(JSON.stringify(data, null, 2));
@@ -109,6 +115,9 @@ export default function WatchStatus() {
 
                         // and set the scanning message
                         setScanningMsg(`"${test_RequestName}" testing complete...`);
+
+                        // view the download button
+                        set_download_button_state(true);
                     }
                     else {
                         // enable scanning
@@ -116,6 +125,9 @@ export default function WatchStatus() {
 
                         // and set the scanning message
                         setScanningMsg(`Scanning the "${test_RequestName}" request for status updates...`);
+
+                        // hide the download button
+                        set_download_button_state(false);
                     }
                 }
             }
@@ -172,15 +184,27 @@ export default function WatchStatus() {
          */
         // return the control
         return (
-            <Col className={"pt-3"}>
-                <h4>{scanningMsg}</h4>
+            <div className={"pt-3"}>
+                <Row>
+                    <Col className="d-flex">
+                        <h4 className={"pe-3"}>{scanningMsg}</h4>
+                    {
+                        downloadButtonView &&
+                        <div className={"pb-1"}>
+                            <Link to={`https://irods-settings-dev.apps.renci.org/get_test_result_file?request_name=${test_RequestName}`}><Button color={"success"}> Ready to Download </Button></Link>
+                        </div>
+                    }
+                    </Col>
+                </Row>
+
                 <Input
                     className="input-control"
                     type="textarea"
                     disabled={true}
                     defaultValue={statusMsg}
                     rows="22"/>
-            </Col>
+            </div>
+
         )
     };
 
@@ -216,7 +240,7 @@ export default function WatchStatus() {
                     </Row>
                 </Form>
 
-                <Row className={"pb-1"}>
+                <Row className={"pb-0"}>
                     <StatusPollingText/>
                 </Row>
             </Container>
