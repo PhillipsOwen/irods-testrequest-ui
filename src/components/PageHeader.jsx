@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 
-import {Col, Navbar, NavbarBrand} from 'reactstrap';
+import {Button, Col, Navbar, NavbarBrand} from 'reactstrap';
 import {Link} from "react-router-dom";
 
     export default function PageHeader() {
@@ -20,8 +20,8 @@ import {Link} from "react-router-dom";
 
                 <Navbar className="border-top border-bottom border-gray">
                     <Col className="d-flex justify-content-start">
-                        <Link className="links" to="/">Create a test run</Link>
-                        <Link className="links" to="/WatchStatus">View test run progress</Link>
+                        <Link className="links" to="/"><Button color={"success"}> Create a test run </Button></Link>
+                        <Link className="links" to="/WatchStatus"><Button color={"success"}> View test run progress </Button></Link>
                     </Col>
                 </Navbar>
             </header>
