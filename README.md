@@ -25,9 +25,29 @@ The iRODS-K8s Test Request UI product allows a user to create and submit a test 
 
 Standard Node.js/React build rules apply.
 
+### The environment dependencies for this app are:
+
+    User interface - Node.js: v20.11.1, Npm: v10.5.0, React: v18.2.0, ReactStrap: v9.2.2
+    Docker - Engine: v25.0.3, API: v1.44
+
+### The React packages are:
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.3",
+    "express": "^4.18.2",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.10.1",
+    "react-dom": "^18.2.0",
+    "react-multi-select-component": "^4.3.4",
+    "react-router-dom": "^6.22.1",
+    "react-scripts": "5.0.1",
+    "reactstrap": "^9.2.2",
+    "web-vitals": "^2.1.4"
+
 ### How to build the Docker image for this product
 
- - docker build --build-arg APP_VERSION=Test -f Dockerfile -t irods-k8s-supervisor:latest .
- - This image must be placed in a container image registry and referenced in this component's Helm scripts.
+ - docker build --build-arg APP_VERSION=<version> -f Dockerfile -t irods-testrequest-ui:latest .
+ - Note: The Docker image must be placed in a container image registry and referenced in this component's Helm scripts.
 
-Helm/k8s charts for this product are available at: [iRODS K8s Helm](https://github.com/irods/irods_k8s/tree/main/helm/irods-testrequest-ui).
+### Helm/k8s charts for this product are available *[here](https://github.com/irods/irods_k8s/tree/main/helm/irods-testrequest-ui)*.
