@@ -15,10 +15,10 @@ export default function PageFooter() {
                 </Col>
 
                 <Col className="d-flex justify-content-center links">
-                    <Link to="https://www.irods.org/">
-                        <img alt="logo" src={process.env.PUBLIC_URL + '/favicon.png'} style={{height: 25}}/>
+                    <Link to="https://www.irods.org/" target={"_blank"}>
+                        <img alt="logo" src={process.env.PUBLIC_URL + '/favicon.png'} style={{height: 15}}/>
+                        <div style={{fontSize: "10px"}} className={"links"}> Copyright © iRODS Consortium 2024</div>
                     </Link>
-                    <div className={"links"}> Copyright © iRODS Consortium 2024 </div>
                 </Col>
 
                 <Col className="d-flex justify-content-end links">
