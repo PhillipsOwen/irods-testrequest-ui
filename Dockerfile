@@ -4,7 +4,7 @@
 
 
 # build phase one, create the build
-FROM node:20.11.1 as build
+FROM node:20.12 as build
 
 # get some credit
 LABEL maintainer="powen@renci.org"
@@ -19,7 +19,10 @@ COPY ./iRODS*.png ./
 COPY ./package*.json ./
 
 # install all packages/components
-RUN npm install
+RUN npm install -g npm@10.5.1
+
+# make sure we have the react scripts installed
+RUN npm install react-scripts
 
 # get the build argument that has the version
 ARG APP_VERSION=$(APP_VERSION)
