@@ -28,10 +28,10 @@ export default function WatchStatus() {
     // define the state variables
     const [statusMsg, setStatusMsg] = useState('');
     const [scanning, setScanning] = useState(false);
-    const [scanningMsg, setScanningMsg] = useState('Standing by...');
+    const [scanningMsg, setScanningMsg] = useState('Standing by. Select or enter a test request name and submit...');
     const [test_RequestName, set_test_RequestName] = useState(inRequestName || '');
     const [test_RequestOpen, set_test_RequestOpen] = useState(false);
-    const [downloadButtonView: boolean, set_download_button_state] = useState(false);
+    const [downloadButtonView, set_download_button_state] = useState(false);
 
 
     const toggle_TestRequest = () => {
@@ -55,7 +55,7 @@ export default function WatchStatus() {
         setScanning(false);
 
         // and set the scanning message
-        setScanningMsg(`Standing by...`);
+        setScanningMsg(`Standing by. Select or enter a test request name and submit...`);
 
         // clear the test results
         setStatusMsg('')
@@ -100,7 +100,7 @@ export default function WatchStatus() {
                     setScanning(false);
 
                     // and set the scanning message
-                    setScanningMsg(`Standing by...`);
+                    setScanningMsg(`Standing by. Select or enter a test request name and submit...`);
 
                     // hide the download button
                     set_download_button_state(false);
