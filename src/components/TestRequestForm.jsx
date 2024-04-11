@@ -271,7 +271,21 @@ export default function TestRequestForm() {
             // set the failure flag
             formIsValid &= false;
         } else {
-            set_test_RequestNameState('has-success');
+            // create a new name with special characters removed
+            let new_str = test_RequestName.replace(/[^a-zA-Z0-9-_]/g, "-");
+
+            // warn the user if the name changed
+            if(new_str !== test_RequestName){
+                set_test_RequestNameState('has-danger');
+
+                // set the submission status
+                submission_status += " - Only request names with alpha-numeric, hyphens or underscores are supported.\n"
+
+                // set the failure flag
+                formIsValid &= false;
+            }
+            else
+                set_test_RequestNameState('has-success');
         }
 
         // check the environment type
