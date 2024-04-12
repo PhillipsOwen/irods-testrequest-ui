@@ -15,23 +15,23 @@ WORKDIR /src
 ENV PATH /src/node_modules/.bin:$PATH
 
 # get the build arguments
-ARG APP_VERSION=$(APP_VERSION)
-ARG APP_BASE_DATA_URL=$(APP_BASE_DATA_URL)
-ARG APP_SETTINGS_DATA_TOKEN=$(APP_SETTINGS_DATA_TOKEN)
-ARG APP_WATCH_REFRESH_TIMEOUT=$(APP_WATCH_REFRESH_TIMEOUT)
-
-# now add the values into ENV params
-ENV REACT_APP_VERSION=$APP_VERSION
-ENV REACT_APP_BASE_DATA_URL=$APP_BASE_DATA_URL
-ENV REACT_APP_SETTINGS_DATA_TOKEN=$APP_SETTINGS_DATA_TOKEN
-ENV REACT_APP_WATCH_REFRESH_TIMEOUT=$APP_WATCH_REFRESH_TIMEOUT
+#ARG APP_VERSION=$(APP_VERSION)
+#ARG APP_BASE_DATA_URL=$(APP_BASE_DATA_URL)
+#ARG APP_SETTINGS_DATA_TOKEN=$(APP_SETTINGS_DATA_TOKEN)
+#ARG APP_WATCH_REFRESH_TIMEOUT=$(APP_WATCH_REFRESH_TIMEOUT)
+#
+## now add the values into ENV params
+#ENV REACT_APP_VERSION=$APP_VERSION
+#ENV REACT_APP_BASE_DATA_URL=$APP_BASE_DATA_URL
+#ENV REACT_APP_SETTINGS_DATA_TOKEN=$APP_SETTINGS_DATA_TOKEN
+#ENV REACT_APP_WATCH_REFRESH_TIMEOUT=$APP_WATCH_REFRESH_TIMEOUT
 
 # Copy in source files
 COPY ./src ./src
 COPY ./public ./public
 COPY ./iRODS*.png ./
 COPY ./package*.json ./
-#COPY ./.env ./.env
+COPY ./.env ./.env
 
 # install package components
 RUN npm ci
@@ -49,6 +49,9 @@ COPY --from=build /src/build /usr/share/nginx/html
 
 # disable nginx user because now this is running as non-root
 RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
+
+# copy in the configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # start the web server
 CMD ["nginx", "-g", "daemon off;"]
