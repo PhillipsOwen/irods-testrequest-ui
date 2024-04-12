@@ -31,6 +31,7 @@ COPY ./src ./src
 COPY ./public ./public
 COPY ./iRODS*.png ./
 COPY ./package*.json ./
+#COPY ./.env ./.env
 
 # install package components
 RUN npm ci
@@ -41,10 +42,13 @@ RUN npm run build
 ###################
 # startup the nginx server
 ###################
-FROM nginxinc/nginx-unprivileged:stable-alpine
+FROM nginxinc/nginx-unprivileged
 
 # get the source files for the site in the right place
-COPY --from=build /src/build /opt/bitnami/nginx/html/
+COPY --from=build /src/build /usr/share/nginx/html
+
+# disable nginx user because now this is running as non-root
+RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
 
 # start the web server
 CMD ["nginx", "-g", "daemon off;"]
