@@ -41,7 +41,7 @@ RUN npm run build
 ###################
 # startup the nginx server
 ###################
-FROM bitnami/nginx:latest
+FROM nginxinc/nginx-unprivileged:stable-alpine
 
 # get the source files for the site in the right place
 COPY --from=build /src/build /opt/bitnami/nginx/html/
