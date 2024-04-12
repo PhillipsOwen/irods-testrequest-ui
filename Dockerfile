@@ -31,7 +31,7 @@ COPY ./src ./src
 COPY ./public ./public
 COPY ./iRODS*.png ./
 COPY ./package*.json ./
-COPY ./.env ./.env
+#COPY ./.env ./.env
 
 # install package components
 RUN npm ci
