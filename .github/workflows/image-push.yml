@@ -47,6 +47,10 @@ jobs:
           push: true
           build-args: |
             APP_VERSION=${{ steps.get_version.outputs.VERSION }}
+            APP_BASE_DATA_URL=${{ secrets.BASE_DATA_URL }}
+            APP_SETTINGS_DATA_TOKEN=${{ secrets.TOKEN }}
+            APP_WATCH_REFRESH_TIMEOUT=${{ secrets.WATCH_REFRESH_TIMEOUT }}
+
           tags: |
             ${{ env.REGISTRY }}:latest
             ${{ env.REGISTRY }}:${{ steps.get_version.outputs.VERSION }}
