@@ -1,7 +1,7 @@
 // Copyright (c) 2024, The University of North Carolina at Chapel Hill All rights reserved.
 //
 // SPDX-License-Identifier: BSD 3-Clause
-
+import React from 'react';
 import {Card, CardBody, Col, Container, List, Row} from "reactstrap";
 
 export default function About() {

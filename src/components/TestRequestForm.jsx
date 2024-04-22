@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 // noinspection JSUnresolvedReference
-
 import React, {useState} from 'react';
 
 import {

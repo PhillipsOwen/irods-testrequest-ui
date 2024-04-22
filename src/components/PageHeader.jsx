@@ -1,7 +1,7 @@
 // Copyright (c) 2024, The University of North Carolina at Chapel Hill All rights reserved.
 //
 // SPDX-License-Identifier: BSD 3-Clause
-
+import React from 'react';
 import {Button, Col, Navbar, NavbarBrand} from 'reactstrap';
 import {Link} from "react-router-dom";
 
