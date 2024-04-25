@@ -27,23 +27,9 @@ code {
 *   #0a534e dark
 *   #18bc9c light
 */
-header {
-  background-color: white !important;
-  font-weight: 600;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
 
 img {
  height: 25px;
-}
-
-footer {
-  background-color: white;
-  text-align: right;
-  color: #5a5a5a;
-  position: relative;
-  font-weight: 600;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
@@ -86,4 +72,14 @@ h1, h2, h3, h4, h5 {
   background-color: white;
   margin-bottom: 10px;
   border-color: #5a5a5a !important;
+}
+
+footer {
+  position:fixed;
+  bottom:0;
+  width: 100%;
+  background-color: white;
+  text-align: right;
+  color: #5a5a5a;
+  font-weight: 600;
 }
