@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
     export default function PageHeader() {
         return (
             <header>
-                <Navbar className="border-top border-gray">
+                <Navbar>
                     <Col className="d-flex justify-content-start">
                         <NavbarBrand href={"/"}>
                             <img alt="logo" src={process.env.PUBLIC_URL + '/iRODS-Logo-RTM_teal_grey.png'}/>
