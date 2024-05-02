@@ -22,16 +22,16 @@ export default function GetPulldownData({data_name, on_click}) {
     // set the setting security token
     const dataSecurityToken = process.env.REACT_APP_SETTINGS_DATA_TOKEN;
 
-    // push up the data
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${dataSecurityToken}`
-        }
-    };
-
     // get the data
     useEffect(() => {
+        // set the request header details
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${dataSecurityToken}`
+            }
+        };
+
         const fetchPullDownData = () => {
             return fetch(URL, requestOptions
             )
@@ -47,7 +47,7 @@ export default function GetPulldownData({data_name, on_click}) {
         };
 
         fetchPullDownData().then();
-    }, []);
+    }, [URL, dataSecurityToken]);
 
     // return the rendered content
     return (
