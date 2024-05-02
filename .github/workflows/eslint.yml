@@ -1,0 +1,25 @@
+# Copyright (c) 2024, The University of North Carolina at Chapel Hill All rights reserved.
+# SPDX-FileCopyrightText: 2022 Renaissance Computing Institute. All rights reserved.
+#
+# SPDX-License-Identifier: BSD 3-Clause
+
+name: ES Lint the repo
+
+# trigger event is on a push or a pull request
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run lint
