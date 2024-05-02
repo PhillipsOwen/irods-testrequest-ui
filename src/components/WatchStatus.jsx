@@ -38,7 +38,7 @@ export default function WatchStatus() {
 
         // save the new state of the control
         set_test_RequestOpen(!test_RequestOpen);
-    }
+    };
 
     const change_TestRequestSelectValue = (value) => {
         /**
@@ -55,11 +55,11 @@ export default function WatchStatus() {
         setScanningMsg(`Standing by. Select or enter a test request name and submit...`);
 
         // clear the test results
-        setStatusMsg('')
+        setStatusMsg('');
 
         // hide the download button
         set_download_button_state(false);
-    }
+    };
 
     // set the request header
     const requestOptions = {
@@ -144,10 +144,10 @@ export default function WatchStatus() {
                 const comInterval = setInterval(getStatusData, refreshTime);
 
                 // This will refresh the data at regularIntervals of refreshTime
-                return () => clearInterval(comInterval)
+                return () => clearInterval(comInterval);
             }
         }
-    })
+    });
 
     const handleSubmit = (e) => {
         /**
@@ -160,7 +160,7 @@ export default function WatchStatus() {
 
         // start getting the data
         getStatusData().then();
-    }
+    };
 
     const handleTest_RequestNameChange = (e) => {
         /**
@@ -202,7 +202,7 @@ export default function WatchStatus() {
                     rows="22"/>
             </div>
 
-        )
+        );
     };
 
     /**
@@ -228,7 +228,7 @@ export default function WatchStatus() {
                                        id="test_RequestName"
                                        value={test_RequestName}
                                        placeholder="Select or enter a test request name"
-                                       onChange={(e) => {handleTest_RequestNameChange(e)}}>
+                                       onChange={(e) => {handleTest_RequestNameChange(e);}}>
                                 </Input>
 
                                 <Button className="button-size" color={"success"}>Submit</Button>

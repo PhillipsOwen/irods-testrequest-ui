@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: BSD 3-Clause
 import React from 'react';
-import TestRequestForm from './components/TestRequestForm.jsx'
+import TestRequestForm from './components/TestRequestForm.jsx';
 import PageHeader from "./components/PageHeader.jsx";
 import {Route, Routes} from "react-router-dom";
 import WatchStatus from "./components/WatchStatus.jsx";
@@ -23,6 +23,6 @@ const App = () => {
             <PageFooter/>
         </div>
     );
-}
+};
 
 export default App;

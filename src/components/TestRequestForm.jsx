@@ -70,14 +70,14 @@ export default function TestRequestForm() {
 
         // save the new state of the control
         set_test_EnvironmentTypeOpen(!test_EnvironmentTypeOpen);
-    }
+    };
 
     const change_enableDebugModeChecked = (value) => {
         /**
          * sets the current state of debug mode
          */
         set_enableDebugModeChecked(value);
-    }
+    };
 
     const toggle_TestNamesSelected = () => {
         /**
@@ -86,7 +86,7 @@ export default function TestRequestForm() {
         // select all the tests if there are none selected
         if (test_Names.length === 0) {
             // define a list for all the options
-            let options = []
+            const options = [];
 
             // for each option
             for (let i = 0, len = document.getElementById("testsNamesMulti").length; i < len; i++) {
@@ -94,7 +94,7 @@ export default function TestRequestForm() {
                 document.getElementById("testsNamesMulti")[i].selected=true;
 
                 // save the options
-                options.push(document.getElementById("testsNamesMulti")[i].label)
+                options.push(document.getElementById("testsNamesMulti")[i].label);
             }
 
             // set the options in state
@@ -111,7 +111,8 @@ export default function TestRequestForm() {
             // clear the state
             set_test_Names([]);
         }
-    }
+    };
+
     const toggle_osType = () => {
         /**
          * toggles the state of the os type name pulldown
@@ -119,7 +120,7 @@ export default function TestRequestForm() {
 
         // save the new state of the control
         set_os_ImageOpen(!os_ImageOpen);
-    }
+    };
 
     const toggle_dbmsType = () => {
         /**
@@ -128,7 +129,7 @@ export default function TestRequestForm() {
 
         // save the new state of the control
         set_dbms_ImageOpen(!dbms_ImageOpen);
-    }
+    };
 
     const change_environmentTypeSelectValue = (value) => {
         /**
@@ -143,7 +144,7 @@ export default function TestRequestForm() {
 
         // update the validation color
         set_environment_TypeState('success');
-    }
+    };
 
     const change_osTypeSelectValue = (value) => {
         /**
@@ -159,7 +160,7 @@ export default function TestRequestForm() {
         // update the validation color
         set_os_NameState('success');
 
-    }
+    };
 
     const change_dbmsImageSelectValue = (value) => {
         /**
@@ -177,7 +178,7 @@ export default function TestRequestForm() {
 
         // update the validation color
         set_dbms_NameState('success');
-    }
+    };
 
     const change_ExecutorSelection = (value) => {
         /**
@@ -185,18 +186,18 @@ export default function TestRequestForm() {
          */
 
         // save the change
-        set_test_ExecutorName(value)
+        set_test_ExecutorName(value);
 
         // set the button color
         if (value === 'CONSUMER') {
-            set_test_ExecutorConsumerState('success')
-            set_test_ExecutorProviderState('secondary')
+            set_test_ExecutorConsumerState('success');
+            set_test_ExecutorProviderState('secondary');
         }
         else {
-            set_test_ExecutorProviderState('success')
-            set_test_ExecutorConsumerState('secondary')
+            set_test_ExecutorProviderState('success');
+            set_test_ExecutorConsumerState('secondary');
         }
-    }
+    };
 
     const change_TestsSelectValues = (e) => {
         /**
@@ -204,12 +205,12 @@ export default function TestRequestForm() {
          */
 
         // init some variables for the capture selections
-        let opts = [], opt;
+        const opts = [];
 
         // for each item
         for (let i = 0, len = e.target.options.length; i < len; i++) {
             // capture the option object
-            opt = e.target.options[i];
+            const opt = e.target.options[i];
 
             // is the option selected?
             if (opt.selected)
@@ -222,7 +223,7 @@ export default function TestRequestForm() {
 
         // update the validation color
         set_test_NameState('has-success');
-    }
+    };
 
     const handleTest_RequestNameChange = (e) => {
         /**
@@ -271,14 +272,14 @@ export default function TestRequestForm() {
             formIsValid &= false;
         } else {
             // create a new name with special characters removed
-            let new_str = test_RequestName.replace(/[^a-zA-Z0-9-_]/g, "-");
+            const new_str = test_RequestName.replace(/[^a-zA-Z0-9-_]/g, "-");
 
             // warn the user if the name changed
             if(new_str !== test_RequestName){
                 set_test_RequestNameState('has-danger');
 
                 // set the submission status
-                submission_status += " - Only request names with alpha-numeric, hyphens or underscores are supported.\n"
+                submission_status += " - Only request names with alpha-numeric, hyphens or underscores are supported.\n";
 
                 // set the failure flag
                 formIsValid &= false;
@@ -379,7 +380,7 @@ export default function TestRequestForm() {
 
         // return the validation result
         return formIsValid;
-    }
+    };
 
     const buildTestRequest = () => {
         /**
@@ -388,7 +389,7 @@ export default function TestRequestForm() {
         let run_mode = 'new';
 
         // build up the test request
-        const tests = { [test_ExecutorName]: test_Names }
+        const tests = { [test_ExecutorName]: test_Names };
 
         // use the debug mode checkbox data on the submission
         if (enableDebugModeChecked) run_mode = 'debug';
@@ -405,7 +406,7 @@ export default function TestRequestForm() {
             `&os_image=${encodeURIComponent(os_ImageName)}` +
             `&request_group=${test_RequestName}` +
             `&tests=${encodeURIComponent(newTests)}`;
-    }
+    };
 
     const handleSubmit = (e) => {
         /**
@@ -459,7 +460,7 @@ export default function TestRequestForm() {
                     set_submissionStatus(error);}
                 );
         }
-    }
+    };
 
     const ShowSubmissionResults = () => {
         /**
@@ -476,7 +477,7 @@ export default function TestRequestForm() {
                        rows="6"></Input>
                 <br/>
             </>
-        )
+        );
     };
 
     return (
@@ -493,7 +494,7 @@ export default function TestRequestForm() {
                                        valid={test_RequestNameState === "has-success"}
                                        invalid={test_RequestNameState === "has-danger"}
                                        onChange={(e) => {
-                                           handleTest_RequestNameChange(e)
+                                           handleTest_RequestNameChange(e);
                                        }}>
                                 </Input>
                             </InputGroup>
@@ -522,7 +523,7 @@ export default function TestRequestForm() {
                                        value={test_PackageDirectoryName}
                                        placeholder="Enter a package directory name"
                                        valid={true}
-                                       onChange={(e) => {handleTest_PackageDirectoryNameChange(e)}}>
+                                       onChange={(e) => {handleTest_PackageDirectoryNameChange(e);}}>
                                 </Input>
                             </InputGroup>
                         </Col>

@@ -3,15 +3,18 @@
 // SPDX-License-Identifier: BSD 3-Clause
 import React, {useEffect, useState} from "react";
 import {DropdownItem} from "reactstrap";
+import PropTypes from 'prop-types';
 
 export default function GetPulldownData({data_name, on_click}) {
     /**
      * function to get data from a web service and return
      * the formatted items for a dropdown
      */
+    // set component prop types
+    GetPulldownData.propTypes = { data_name: PropTypes.string, on_click: PropTypes.any };
 
     // store the items in state
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState([]);
 
     // define the web service endpoint
     const URL = process.env.REACT_APP_BASE_DATA_URL + data_name;
@@ -36,7 +39,7 @@ export default function GetPulldownData({data_name, on_click}) {
                     return res.json();
                 })
                 .then(data => {
-                    setItems(data)
+                    setItems(data);
                 })
                 .catch(err => {
                     console.log(err);
@@ -44,8 +47,6 @@ export default function GetPulldownData({data_name, on_click}) {
         };
 
         fetchPullDownData().then();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // return the rendered content

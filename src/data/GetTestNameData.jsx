@@ -10,10 +10,10 @@ export default function GetTestNameData() {
      */
 
     // store the items in state
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState([]);
 
     // define the web service endpoint
-    let URL = process.env.REACT_APP_BASE_DATA_URL + 'get_test_names';
+    const URL = process.env.REACT_APP_BASE_DATA_URL + 'get_test_names';
 
     // set the setting security token
     const dataSecurityToken = process.env.REACT_APP_SETTINGS_DATA_TOKEN;
@@ -35,7 +35,7 @@ export default function GetTestNameData() {
                     return res.json();
                 })
                 .then(data => {
-                    setItems(data)
+                    setItems(data);
                 })
                 .catch(err => {
                     console.log(err);
@@ -43,8 +43,6 @@ export default function GetTestNameData() {
         };
 
         fetchTestNameData().then();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // return the rendered content

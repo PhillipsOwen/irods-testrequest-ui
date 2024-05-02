@@ -3,18 +3,21 @@
 // SPDX-License-Identifier: BSD 3-Clause
 import React, {useEffect, useState} from "react";
 import {Input, InputGroupText, InputGroup} from "reactstrap";
+import PropTypes from 'prop-types';
 
 export default function GetTestForensicsData({request_group}) {
     /**
      * function to get data from a web service and return
      * the formatted status of test forensics
      */
+    // set component prop types
+    GetTestForensicsData.propTypes = {request_group: PropTypes.string};
 
     // store the items in state
     const [item, setItem] = useState('');
 
     // define the web service endpoint
-    let URL = process.env.REACT_APP_BASE_DATA_URL + 'get_run_forensics/?request_group=' + request_group;
+    const URL = process.env.REACT_APP_BASE_DATA_URL + 'get_run_forensics/?request_group=' + request_group;
 
     // set the setting security token
     const dataSecurityToken = process.env.REACT_APP_SETTINGS_DATA_TOKEN;
@@ -49,8 +52,6 @@ export default function GetTestForensicsData({request_group}) {
         };
 
         fetchTestForensicsData().then();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // return the rendered content
