@@ -9,7 +9,6 @@ name: ES Lint the repo
 on:
   workflow_dispatch:
   push:
-  pull_request:
 
 jobs:
   eslint:
