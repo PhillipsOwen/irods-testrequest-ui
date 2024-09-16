@@ -1,7 +1,7 @@
 import globals from "globals";
 import react from "eslint-plugin-react";
 
-// this bit fixes the collision with the React definition of react
+// this bit fixes the collision with the React definition of React
 react["configs"]["recommended"].plugins = { react };
 react["configs"]["recommended"].languageOptions = { parserOptions: react["configs"]["recommended"].parserOptions };
 
